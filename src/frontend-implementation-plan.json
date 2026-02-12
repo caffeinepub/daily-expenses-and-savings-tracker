@@ -1,0 +1,89 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Mobile-first responsive UI for Dashboard and Entries",
+  "requirements": [
+    {
+      "id": "REQ-10",
+      "summary": "Make Dashboard and Entries layouts mobile-first responsive with improved spacing, typography scaling, and touch-friendly controls",
+      "acceptanceCriteria": [
+        "On phone-sized viewports (320–430px), all primary screens (Dashboard, Entries) render without horizontal scrolling.",
+        "Tap targets (primary buttons, navigation buttons, action icons) are comfortably clickable on touch devices (no cramped icon clusters).",
+        "Page padding/margins are adjusted so content does not feel overly wide/tall on mobile (e.g., reduce desktop-oriented vertical padding where appropriate)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/layout/AppLayout.tsx",
+          "operation": "modify",
+          "description": "Adjust global layout spacing for mobile-first: reduce main vertical padding on small screens, ensure main content uses full width without overflow, and tune footer spacing to avoid excessive vertical padding on phones."
+        },
+        {
+          "path": "frontend/src/pages/DashboardPage.tsx",
+          "operation": "modify",
+          "description": "Update Dashboard page typography and spacing for small screens (e.g., responsive heading sizes, card grid behavior, and content spacing) to remain readable and comfortable at 320–430px widths using composed shadcn-ui Card primitives. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/EntriesPage.tsx",
+          "operation": "modify",
+          "description": "Update Entries page typography and spacing for small screens so the page header and sections read well and avoid overly large desktop-oriented spacing."
+        },
+        {
+          "path": "frontend/src/components/entries/EntryForm.tsx",
+          "operation": "modify",
+          "description": "Make the add-entry form mobile-friendly: improve grid stacking, input/control spacing, and touch target sizing (buttons, popovers) on small screens using composed shadcn-ui Button/Input/Textarea/Popover/Calendar components. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/dashboard/PeriodSelector.tsx",
+          "operation": "modify",
+          "description": "Improve period selector mobile ergonomics: ensure controls wrap cleanly, increase tap target sizes on small screens, and prevent overflow within the Card content using composed shadcn-ui Button/Popover/Calendar components. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/index.css",
+          "operation": "modify",
+          "description": "Add small-screen friendly base adjustments (e.g., safe default overflow handling and consistent tap/typography feel) without changing shadcn-ui component source files; keep changes limited to global base styles and utilities."
+        }
+      ]
+    },
+    {
+      "id": "REQ-11",
+      "summary": "Improve mobile navigation and sticky header behavior so navigation is always accessible and never overlaps content",
+      "acceptanceCriteria": [
+        "On small screens, the header and the existing mobile navigation controls remain visible/accessible and do not cause layout overflow.",
+        "Navigation controls on mobile clearly indicate the current page and remain usable with one hand (buttons span available width appropriately)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/layout/AppHeader.tsx",
+          "operation": "modify",
+          "description": "Refine header layout for small screens: prevent logo/title/login overflow (allow wrapping where needed), ensure sticky behavior remains reliable, and make the mobile nav buttons larger and clearly active (add accessible current-page indication) using composed shadcn-ui Button. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/layout/AppLayout.tsx",
+          "operation": "modify",
+          "description": "Ensure main content spacing accounts for the sticky header on mobile so content never appears overlapped or clipped during scroll/navigation transitions."
+        }
+      ]
+    },
+    {
+      "id": "REQ-12",
+      "summary": "Adapt the Entries list for mobile with a card/stacked layout while keeping edit/delete actions and filters usable",
+      "acceptanceCriteria": [
+        "On small screens, the entries list does not render as an unreadable multi-column table; instead it uses a mobile-friendly layout (such as stacked rows/cards) that shows date, type, amount, and optional category/note clearly.",
+        "Edit and delete actions remain available for each entry on mobile without requiring precision tapping.",
+        "Existing filters (type and date range) remain usable on mobile, with controls sized and laid out appropriately."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/entries/EntriesMobileList.tsx",
+          "operation": "create",
+          "description": "Create a mobile-only entries presentation (stacked cards/rows) that displays date, type, amount, and optional category/note, and includes large, touch-friendly edit/delete controls (reusing existing EditEntryDialog/DeleteEntryConfirmDialog triggers) using composed shadcn-ui Card/Button/Badge primitives. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/entries/EntriesTable.tsx",
+          "operation": "modify",
+          "description": "Update EntriesTable to render mobile filters with touch-friendly sizing and to switch between the existing table on larger screens and the new EntriesMobileList on small screens (avoid horizontal scrolling). Keep edit/delete capabilities and existing filter logic intact, composing shadcn-ui Table/Popover/Calendar components without modifying files under frontend/src/components/ui. Verify the component's usage instructions before implementing."
+        }
+      ]
+    }
+  ]
+}

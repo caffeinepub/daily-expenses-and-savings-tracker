@@ -1,0 +1,141 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 7,
+  "summary": "Build an app to track expenses and savings with daily user input.",
+  "architectural_notes": [
+    "Add configurable currency formatting (default INR/₹) used consistently across all amount fields and summaries.",
+    "Design UI as mobile-first responsive (touch-friendly controls, readable typography, layouts that adapt to small screens)."
+  ],
+  "known_issues": [
+    "App currently shows amounts in USD ($); user requests INR (₹) instead."
+  ],
+  "isFixRequest": false,
+  "existing_features": [
+    {
+      "id": "feature-implement-internet-identity-sign-in-and-per-user-data-isolation-so-each-signed-in-user-can-only-view-and-manage-their-own-expenses-and-savings-entries",
+      "title": "Implement Internet Identity sign-in and per-user data isolation so each signed-in user can only view and manage their own expenses and savings entries.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-build-a-daily-input-ui-that-lets-the-user-add-an-expense-or-saving-entry-with-date-picker-default-today-amount-type-toggle-optional-category-and-note-validate-inputs-and-show-clear-errors-in-english",
+      "title": "Build a daily input UI that lets the user add an expense or saving entry with date picker (default today), amount, type toggle, optional category, and note; validate inputs and show clear errors in English.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-an-entries-view-that-displays-the-user-s-entries-in-a-list-table-with-filters-for-date-range-and-type-expense-saving-and-supports-editing-and-deleting-entries-with-confirmation",
+      "title": "Create an entries view that displays the user’s entries in a list/table with filters for date range and type (Expense/Saving), and supports editing and deleting entries with confirmation.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-dashboard-summary-showing-totals-for-a-selected-period-default-current-month-total-expenses-total-savings-and-net-savings-minus-expenses-plus-a-simple-breakdown-by-category-when-categories-exist",
+      "title": "Add a dashboard summary showing totals for a selected period (default: current month): total expenses, total savings, and net (savings minus expenses), plus a simple breakdown by category (when categories exist).",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-coherent-distinctive-visual-theme-and-apply-it-consistently-across-the-app-layout-colors-typography-spacing-avoid-blue-and-purple-as-primary-colors-keep-user-facing-text-in-english",
+      "title": "Add a coherent, distinctive visual theme and apply it consistently across the app (layout, colors, typography, spacing). Avoid blue and purple as primary colors. Keep user-facing text in English.",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-generate-and-include-static-visual-assets-and-render-them-in-the-ui-e-g-app-header-and-empty-states-from-frontend-public-assets-generated",
+      "title": "Generate and include static visual assets, and render them in the UI (e.g., app header and empty states) from frontend/public/assets/generated.",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-ui-to-display-all-monetary-amounts-in-indian-rupees-inr-using-the-symbol-instead-of-across-the-entire-app-entries-list-table-dashboard-totals-category-breakdown-delete-confirmation-copy-and-any-other-places-where-amounts-are-rendered",
+      "title": "Update the UI to display all monetary amounts in Indian Rupees (INR) using the ₹ symbol instead of $ across the entire app (entries list/table, dashboard totals, category breakdown, delete confirmation copy, and any other places where amounts are rendered).",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-introduce-a-single-reusable-currency-formatting-helper-for-inr-and-refactor-amount-rendering-to-use-it-so-formatting-is-consistent-and-easy-to-change-in-one-place",
+      "title": "Introduce a single reusable currency-formatting helper for INR and refactor amount rendering to use it (so formatting is consistent and easy to change in one place).",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-ui-layout-to-be-mobile-first-responsive-so-the-app-is-comfortable-to-use-on-phone-screens-approximately-320-430px-wide-across-the-dashboard-and-entries-pages-including-appropriate-spacing-typography-scaling-and-touch-friendly-controls",
+      "title": "Update the UI layout to be mobile-first responsive so the app is comfortable to use on phone screens (approximately 320–430px wide) across the Dashboard and Entries pages, including appropriate spacing, typography scaling, and touch-friendly controls.",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-improve-mobile-navigation-and-header-behavior-so-users-can-reliably-move-between-dashboard-and-entries-on-mobile-including-ensuring-the-mobile-nav-is-always-accessible-and-does-not-overlap-content",
+      "title": "Improve mobile navigation and header behavior so users can reliably move between Dashboard and Entries on mobile, including ensuring the mobile nav is always accessible and does not overlap content.",
+      "reqIds": [
+        "REQ-11"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-make-the-entries-list-usable-on-mobile-by-adapting-the-entries-table-presentation-for-small-screens-e-g-responsive-layout-that-avoids-cramped-columns-while-preserving-edit-delete-capabilities-and-existing-filters",
+      "title": "Make the Entries list usable on mobile by adapting the entries table presentation for small screens (e.g., responsive layout that avoids cramped columns), while preserving edit/delete capabilities and existing filters.",
+      "reqIds": [
+        "REQ-12"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Create an expenses and savings tracking app that supports daily user input.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Create backend data models and stable storage for daily financial entries, supporting at minimum: date, type (Expense or Saving), amount, optional category, and optional note; and provide CRUD methods for entries.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Display and format amounts in INR (₹) instead of USD ($) across the app (input, lists, dashboard summaries).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Update the app to work well on mobile (mobile-first responsive layout for key screens: daily input, entries list, dashboard).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-6",
+      "summary": "Apply a black and red visual theme across the app (colors, typography, spacing) consistently.",
+      "reqIds": [],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "Daily expenses and savings tracker",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

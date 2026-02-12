@@ -1,0 +1,69 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-update-the-ui-layout-to-be-mobile-first-responsive-so-the-app-is-comfortable-to-use-on-phone-screens-approximately-320-430px-wide-across-the-dashboard-and-entries-pages-including-appropriate-spacing-typography-scaling-and-touch-friendly-controls",
+      "featureTitle": "Update the UI layout to be mobile-first responsive so the app is comfortable to use on phone screens (approximately 320–430px wide) across the Dashboard and Entries pages, including appropriate spacing, typography scaling, and touch-friendly controls.",
+      "files": [
+        "frontend/src/components/dashboard/PeriodSelector.tsx",
+        "frontend/src/components/entries/EntryForm.tsx",
+        "frontend/src/components/layout/AppLayout.tsx",
+        "frontend/src/index.css",
+        "frontend/src/pages/DashboardPage.tsx",
+        "frontend/src/pages/EntriesPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-10"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-improve-mobile-navigation-and-header-behavior-so-users-can-reliably-move-between-dashboard-and-entries-on-mobile-including-ensuring-the-mobile-nav-is-always-accessible-and-does-not-overlap-content",
+      "featureTitle": "Improve mobile navigation and header behavior so users can reliably move between Dashboard and Entries on mobile, including ensuring the mobile nav is always accessible and does not overlap content.",
+      "files": [
+        "frontend/src/components/layout/AppHeader.tsx",
+        "frontend/src/components/layout/AppLayout.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-11"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-make-the-entries-list-usable-on-mobile-by-adapting-the-entries-table-presentation-for-small-screens-e-g-responsive-layout-that-avoids-cramped-columns-while-preserving-edit-delete-capabilities-and-existing-filters",
+      "featureTitle": "Make the Entries list usable on mobile by adapting the entries table presentation for small screens (e.g., responsive layout that avoids cramped columns), while preserving edit/delete capabilities and existing filters.",
+      "files": [
+        "frontend/src/components/entries/EntriesMobileList.tsx",
+        "frontend/src/components/entries/EntriesTable.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-12"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

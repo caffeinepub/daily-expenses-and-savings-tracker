@@ -1,0 +1,22 @@
+{
+  "frontend/src/App.tsx": "Main application component that handles authentication flow, profile setup, and page navigation between Dashboard and Entries pages with theme provider and toast notifications.",
+  "frontend/src/components/auth/LoginButton.tsx": "Login/logout button component that manages Internet Identity authentication and clears React Query cache on logout.",
+  "frontend/src/components/auth/AuthGate.tsx": "Authentication gate component that displays a sign-in screen for unauthenticated users and renders children for authenticated users.",
+  "frontend/src/components/profile/ProfileSetupDialog.tsx": "Modal dialog that prompts new users to enter their name on first login and saves their profile.",
+  "frontend/src/components/layout/AppLayout.tsx": "Main layout wrapper with responsive padding and spacing adjustments for mobile (reduced px/py on small screens) and sticky header support.",
+  "frontend/src/components/layout/AppHeader.tsx": "Application header with mobile-first navigation, responsive logo/title sizing, full-width navigation buttons on mobile with clear active state indication, and improved touch target sizes.",
+  "frontend/src/components/entries/EntryForm.tsx": "Entry form with mobile-friendly input sizing, responsive grid stacking, touch-friendly button heights, and improved popover/calendar controls for small screens.",
+  "frontend/src/components/entries/EntriesTable.tsx": "Entries table with responsive filters, mobile card view (EntriesMobileList) on small screens, desktop table view on large screens, and touch-friendly filter controls.",
+  "frontend/src/components/entries/EditEntryDialog.tsx": "Modal dialog for editing existing entries with the same validation and fields as the create form.",
+  "frontend/src/components/entries/DeleteEntryConfirmDialog.tsx": "Confirmation dialog for deleting entries with entry details displayed before deletion, now showing amounts in INR (₹) format.",
+  "frontend/src/components/entries/EntriesEmptyState.tsx": "Empty state component with illustration shown when user has no entries yet.",
+  "frontend/src/components/dashboard/PeriodSelector.tsx": "Period selector with mobile-friendly layout (stacked date pickers on mobile, inline on desktop), larger tap targets, and responsive button sizing.",
+  "frontend/src/pages/DashboardPage.tsx": "Dashboard page with mobile-responsive typography (smaller headings on mobile), responsive card grid (1 column on mobile, 2 on tablet, 3 on desktop), and adjusted spacing for small screens.",
+  "frontend/src/pages/EntriesPage.tsx": "Entries page with mobile-responsive typography and reduced spacing on small screens.",
+  "frontend/src/hooks/queries/useUserProfile.ts": "React Query hooks for fetching and saving user profile data with proper loading state management to prevent modal flash.",
+  "frontend/src/hooks/queries/useEntries.ts": "React Query hooks for CRUD operations on entries with automatic cache invalidation for entries and dashboard.",
+  "frontend/src/hooks/queries/useDashboard.ts": "React Query hook for fetching dashboard summary data from the backend.",
+  "frontend/src/index.css": "Global styles with mobile-friendly base adjustments including minimum tap target sizes (44px on mobile), horizontal overflow prevention, and improved text readability on small screens.",
+  "frontend/src/utils/currency.ts": "Shared currency formatting utility that formats numbers as Indian Rupees (INR) using Intl.NumberFormat with proper locale settings.",
+  "frontend/src/components/entries/EntriesMobileList.tsx": "New mobile-only entries list component displaying entries as stacked cards with date, type, amount, category, note, and large touch-friendly edit/delete buttons."
+}
