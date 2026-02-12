@@ -1,87 +1,82 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Mobile-first responsive UI for Dashboard and Entries",
+  "title": "Android APK packaging for the existing React app (WebView wrapper)",
   "requirements": [
     {
-      "id": "REQ-10",
-      "summary": "Make Dashboard and Entries layouts mobile-first responsive with improved spacing, typography scaling, and touch-friendly controls",
+      "id": "REQ-13",
+      "summary": "Add an Android wrapper project that loads the built React app in a WebView and document the exact commands to build an installable debug APK.",
       "acceptanceCriteria": [
-        "On phone-sized viewports (320–430px), all primary screens (Dashboard, Entries) render without horizontal scrolling.",
-        "Tap targets (primary buttons, navigation buttons, action icons) are comfortably clickable on touch devices (no cramped icon clusters).",
-        "Page padding/margins are adjusted so content does not feel overly wide/tall on mobile (e.g., reduce desktop-oriented vertical padding where appropriate)."
+        "Repository includes an Android wrapper project/configuration that loads the existing built web app in an Android WebView (or equivalent) and can be built into an APK.",
+        "A README (or clearly named documentation file) is added with step-by-step instructions to generate a debug APK locally, including prerequisites (Android Studio/SDK, Java), install commands, and the output path/name of the generated APK.",
+        "The produced debug APK can be installed on a physical Android device and successfully launches the app to the existing sign-in screen (Internet Identity flow remains functional).",
+        "No backend canister changes are required to support the APK build (the APK uses the same deployed canister endpoints as the web build)."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/layout/AppLayout.tsx",
-          "operation": "modify",
-          "description": "Adjust global layout spacing for mobile-first: reduce main vertical padding on small screens, ensure main content uses full width without overflow, and tune footer spacing to avoid excessive vertical padding on phones."
-        },
-        {
-          "path": "frontend/src/pages/DashboardPage.tsx",
-          "operation": "modify",
-          "description": "Update Dashboard page typography and spacing for small screens (e.g., responsive heading sizes, card grid behavior, and content spacing) to remain readable and comfortable at 320–430px widths using composed shadcn-ui Card primitives. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/pages/EntriesPage.tsx",
-          "operation": "modify",
-          "description": "Update Entries page typography and spacing for small screens so the page header and sections read well and avoid overly large desktop-oriented spacing."
-        },
-        {
-          "path": "frontend/src/components/entries/EntryForm.tsx",
-          "operation": "modify",
-          "description": "Make the add-entry form mobile-friendly: improve grid stacking, input/control spacing, and touch target sizing (buttons, popovers) on small screens using composed shadcn-ui Button/Input/Textarea/Popover/Calendar components. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/components/dashboard/PeriodSelector.tsx",
-          "operation": "modify",
-          "description": "Improve period selector mobile ergonomics: ensure controls wrap cleanly, increase tap target sizes on small screens, and prevent overflow within the Card content using composed shadcn-ui Button/Popover/Calendar components. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/index.css",
-          "operation": "modify",
-          "description": "Add small-screen friendly base adjustments (e.g., safe default overflow handling and consistent tap/typography feel) without changing shadcn-ui component source files; keep changes limited to global base styles and utilities."
-        }
-      ]
-    },
-    {
-      "id": "REQ-11",
-      "summary": "Improve mobile navigation and sticky header behavior so navigation is always accessible and never overlaps content",
-      "acceptanceCriteria": [
-        "On small screens, the header and the existing mobile navigation controls remain visible/accessible and do not cause layout overflow.",
-        "Navigation controls on mobile clearly indicate the current page and remain usable with one hand (buttons span available width appropriately)."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/components/layout/AppHeader.tsx",
-          "operation": "modify",
-          "description": "Refine header layout for small screens: prevent logo/title/login overflow (allow wrapping where needed), ensure sticky behavior remains reliable, and make the mobile nav buttons larger and clearly active (add accessible current-page indication) using composed shadcn-ui Button. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/components/layout/AppLayout.tsx",
-          "operation": "modify",
-          "description": "Ensure main content spacing accounts for the sticky header on mobile so content never appears overlapped or clipped during scroll/navigation transitions."
-        }
-      ]
-    },
-    {
-      "id": "REQ-12",
-      "summary": "Adapt the Entries list for mobile with a card/stacked layout while keeping edit/delete actions and filters usable",
-      "acceptanceCriteria": [
-        "On small screens, the entries list does not render as an unreadable multi-column table; instead it uses a mobile-friendly layout (such as stacked rows/cards) that shows date, type, amount, and optional category/note clearly.",
-        "Edit and delete actions remain available for each entry on mobile without requiring precision tapping.",
-        "Existing filters (type and date range) remain usable on mobile, with controls sized and laid out appropriately."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/components/entries/EntriesMobileList.tsx",
+          "path": "frontend/capacitor.config.ts",
           "operation": "create",
-          "description": "Create a mobile-only entries presentation (stacked cards/rows) that displays date, type, amount, and optional category/note, and includes large, touch-friendly edit/delete controls (reusing existing EditEntryDialog/DeleteEntryConfirmDialog triggers) using composed shadcn-ui Card/Button/Badge primitives. Verify the component's usage instructions before implementing."
+          "description": "Add Capacitor configuration pointing to the React build output directory (e.g., dist) and defining a stable app id/name so Capacitor can generate and manage the Android wrapper project."
         },
         {
-          "path": "frontend/src/components/entries/EntriesTable.tsx",
-          "operation": "modify",
-          "description": "Update EntriesTable to render mobile filters with touch-friendly sizing and to switch between the existing table on larger screens and the new EntriesMobileList on small screens (avoid horizontal scrolling). Keep edit/delete capabilities and existing filter logic intact, composing shadcn-ui Table/Popover/Calendar components without modifying files under frontend/src/components/ui. Verify the component's usage instructions before implementing."
+          "path": "frontend/android/.gitignore",
+          "operation": "create",
+          "description": "Add Android wrapper .gitignore to avoid committing local build outputs (e.g., build/, .gradle/, local.properties) while keeping the wrapper project source tracked."
+        },
+        {
+          "path": "frontend/android/build.gradle",
+          "operation": "create",
+          "description": "Create the top-level Gradle build configuration required to build the Android wrapper as a standard Android project."
+        },
+        {
+          "path": "frontend/android/settings.gradle",
+          "operation": "create",
+          "description": "Create Gradle settings for the Android wrapper, including app module inclusion and any required plugin configuration for WebView/Capacitor integration."
+        },
+        {
+          "path": "frontend/android/gradle.properties",
+          "operation": "create",
+          "description": "Add Gradle properties needed for consistent local builds (e.g., AndroidX settings and build performance defaults)."
+        },
+        {
+          "path": "frontend/android/app/build.gradle",
+          "operation": "create",
+          "description": "Create the Android app module Gradle config for producing a debug APK, including app id, min/target SDK, signing (debug), and packaging of web assets into the APK."
+        },
+        {
+          "path": "frontend/android/app/src/main/AndroidManifest.xml",
+          "operation": "create",
+          "description": "Add Android manifest configuring Internet permission, WebView usage, and the main launcher activity. Ensure WebView supports required behaviors for Internet Identity (e.g., allowing JS, handling navigation)."
+        },
+        {
+          "path": "frontend/android/app/src/main/res/values/strings.xml",
+          "operation": "create",
+          "description": "Add Android app strings (English only) for app name and any required WebView wrapper labels."
+        },
+        {
+          "path": "frontend/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml",
+          "operation": "create",
+          "description": "Add launcher icon resources for the APK; use existing branding as appropriate without introducing new image generation requirements."
+        },
+        {
+          "path": "frontend/android/app/src/main/java/com/expensesaver/MainActivity.java",
+          "operation": "create",
+          "description": "Create the main Android activity that hosts the WebView-based wrapper and loads the packaged web assets (or the configured app URL) so the app launches to the existing sign-in screen."
+        },
+        {
+          "path": "frontend/android/app/src/main/java/com/expensesaver/WebViewConfig.java",
+          "operation": "create",
+          "description": "Add a small configuration helper to ensure WebView settings required for the app and Internet Identity are enabled (JavaScript, DOM storage, cookie behavior, and safe navigation handling)."
+        },
+        {
+          "path": "frontend/scripts/android/build-debug-apk.sh",
+          "operation": "create",
+          "description": "Add a convenience script that builds the React web assets and then invokes the Android Gradle task to produce a debug APK, keeping all steps deterministic for local use."
+        },
+        {
+          "path": "frontend/ANDROID_APK.md",
+          "operation": "create",
+          "description": "Document step-by-step prerequisites and commands to generate and install a debug APK locally (including Android Studio/SDK + Java requirements, build commands, adb install command, and the resulting APK path such as frontend/android/app/build/outputs/apk/debug/app-debug.apk). Also explicitly note that no backend changes are required and the APK uses the same deployed canister configuration as the web build."
         }
       ]
     }

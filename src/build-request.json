@@ -1,84 +1,39 @@
 {
   "kind": "build_request",
-  "title": "Make the app mobile-friendly (responsive UI for phones)",
+  "title": "Provide an installable Android APK build for the app",
   "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-10",
-      "text": "Update the UI layout to be mobile-first responsive so the app is comfortable to use on phone screens (approximately 320–430px wide) across the Dashboard and Entries pages, including appropriate spacing, typography scaling, and touch-friendly controls.",
+      "id": "REQ-13",
+      "text": "Add an Android build packaging workflow that produces an installable .apk for the existing React app, and document the exact steps/commands to generate the APK so it can be installed on an Android phone.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-7"
+          "msg-5"
         ],
         "quotes": [
-          "i want this application in mobile"
+          "i want this in .apk format to install in mobile"
         ]
       },
       "acceptanceCriteria": [
-        "On phone-sized viewports (320–430px), all primary screens (Dashboard, Entries) render without horizontal scrolling.",
-        "Tap targets (primary buttons, navigation buttons, action icons) are comfortably clickable on touch devices (no cramped icon clusters).",
-        "Page padding/margins are adjusted so content does not feel overly wide/tall on mobile (e.g., reduce desktop-oriented vertical padding where appropriate)."
-      ]
-    },
-    {
-      "id": "REQ-11",
-      "text": "Improve mobile navigation and header behavior so users can reliably move between Dashboard and Entries on mobile, including ensuring the mobile nav is always accessible and does not overlap content.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-7"
-        ],
-        "quotes": [
-          "i want this application in mobile"
-        ]
-      },
-      "acceptanceCriteria": [
-        "On small screens, the header and the existing mobile navigation controls remain visible/accessible and do not cause layout overflow.",
-        "Navigation controls on mobile clearly indicate the current page and remain usable with one hand (buttons span available width appropriately)."
-      ]
-    },
-    {
-      "id": "REQ-12",
-      "text": "Make the Entries list usable on mobile by adapting the entries table presentation for small screens (e.g., responsive layout that avoids cramped columns), while preserving edit/delete capabilities and existing filters.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-7"
-        ],
-        "quotes": [
-          "i want this application in mobile"
-        ]
-      },
-      "acceptanceCriteria": [
-        "On small screens, the entries list does not render as an unreadable multi-column table; instead it uses a mobile-friendly layout (such as stacked rows/cards) that shows date, type, amount, and optional category/note clearly.",
-        "Edit and delete actions remain available for each entry on mobile without requiring precision tapping.",
-        "Existing filters (type and date range) remain usable on mobile, with controls sized and laid out appropriately."
+        "Repository includes an Android wrapper project/configuration that loads the existing built web app in an Android WebView (or equivalent) and can be built into an APK.",
+        "A README (or clearly named documentation file) is added with step-by-step instructions to generate a debug APK locally, including prerequisites (Android Studio/SDK, Java), install commands, and the output path/name of the generated APK.",
+        "The produced debug APK can be installed on a physical Android device and successfully launches the app to the existing sign-in screen (Internet Identity flow remains functional).",
+        "No backend canister changes are required to support the APK build (the APK uses the same deployed canister endpoints as the web build)."
       ]
     }
   ],
   "constraints": [
-    "Do not modify any files under frontend/src/components/ui (Shadcn UI components must be composed, not edited).",
-    "Do not edit immutable frontend hook paths: frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts, frontend/src/main.tsx.",
-    "Backend must remain a single Motoko actor in backend/main.mo; do not introduce additional backend services."
+    "Do not modify any files under frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, or any sources under frontend/src/components/ui (compose existing components instead).",
+    "Keep all user-facing text in English."
   ],
   "nonGoals": [
-    "Building a native iOS/Android app (App Store / Play Store).",
-    "Adding push notifications, SMS, email, or real-time WebSocket features.",
-    "Introducing third-party authentication providers beyond Internet Identity."
+    "Publishing to Google Play Store.",
+    "Building an iOS IPA.",
+    "Adding native mobile-only features (push notifications, GPS, contacts, etc.)."
   ],
   "imageRequirements": {
     "required": [],
     "edits": []
-  },
-  "userProfileUpdate": {
-    "goalsToAdd": [],
-    "goalsToRemove": [],
-    "preferencesToAdd": [],
-    "preferencesToRemove": [],
-    "miscToAdd": [],
-    "miscToRemove": [],
-    "fieldsToSet": {},
-    "fieldsToDelete": []
   }
 }

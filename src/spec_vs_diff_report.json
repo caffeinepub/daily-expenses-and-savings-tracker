@@ -1,30 +1,84 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-02-12T07:32:14.033Z",
-  "summary": "The diff primarily implements mobile-first responsiveness across Dashboard and Entries, adds a dedicated mobile entries card list with edit/delete actions, improves responsive spacing/typography, and updates the header to a sticky, full-width mobile navigation with clear active-state indication. One unrequested change appears to be the addition of a branded footer/link in the main layout.",
-  "missing_requirements": [],
+  "generatedAt": "2026-02-12T07:38:55.280Z",
+  "summary": "Diff adds an Android wrapper project (Capacitor-based) under frontend/android and a new build guide file, but the provided documentation appears truncated/incomplete in the diff summary and many unrelated frontend UI changes were also introduced that were not requested by REQ-13.",
+  "missing_requirements": [
+    {
+      "id": "REQ-13",
+      "requirement": "Add a README (or clearly named documentation file) with step-by-step instructions to generate a debug APK locally, including prerequisites, install commands, and the output path/name of the generated APK.",
+      "reason": "The added documentation file shown in the diff is truncated and stops at the beginning of the Capacitor CLI section, so the required step-by-step build commands, install commands, and the exact debug APK output path/name are not evidenced in the provided diff summary.",
+      "evidence": [
+        "frontend/ANDROID_APK.md"
+      ]
+    },
+    {
+      "id": "REQ-13",
+      "requirement": "No backend canister changes are required (APK uses the same deployed canister endpoints as the web build).",
+      "reason": "The diff summary does not provide evidence about canister endpoint configuration (e.g., environment variables, network config) or explicitly state that the Android wrapper points to the same deployed endpoints; only Android wrapper files are shown.",
+      "evidence": [
+        "frontend/android/app/src/main/AndroidManifest.xml",
+        "frontend/android/app/src/main/java/com/expensesaver/MainActivity.java",
+        "frontend/android/app/src/main/java/com/expensesaver/WebViewConfig.java",
+        "frontend/capacitor.config.ts"
+      ]
+    }
+  ],
   "hallucinated_features": [
     {
-      "description": "Added/introduced a global footer with a \"Built with ❤️ using caffeine.ai\" outbound link in the main layout.",
-      "reason": "The BuildRequest focuses on mobile responsiveness/navigation and entries mobile layout; it does not request adding new branding/footer content or external referral links.",
+      "description": "Mobile-responsive UI rework across multiple pages/components (layout/header/forms/tables/dashboard typography and spacing).",
+      "reason": "REQ-13 is solely about adding an Android APK packaging workflow and documentation; these UI/UX changes are not requested and increase scope.",
       "evidence": [
-        "frontend/src/components/layout/AppLayout.tsx"
+        "frontend-file-summaries.txt (entries for frontend/src/components/layout/AppLayout.tsx, AppHeader.tsx, EntryForm.tsx, EntriesTable.tsx, PeriodSelector.tsx, DashboardPage.tsx, EntriesPage.tsx, index.css, etc.)"
+      ]
+    },
+    {
+      "description": "Currency formatting changes to INR (₹) and introduction of a shared currency utility, plus updating delete confirmation to show INR formatting.",
+      "reason": "Not requested by REQ-13 (Android APK packaging).",
+      "evidence": [
+        "frontend-file-summaries.txt (entries for frontend/src/utils/currency.ts and frontend/src/components/entries/DeleteEntryConfirmDialog.tsx)"
+      ]
+    },
+    {
+      "description": "New mobile-only entries list component (EntriesMobileList) and corresponding EntriesTable behavior changes to switch views by screen size.",
+      "reason": "Not requested by REQ-13 (Android APK packaging).",
+      "evidence": [
+        "frontend-file-summaries.txt (entry for frontend/src/components/entries/EntriesMobileList.tsx and frontend/src/components/entries/EntriesTable.tsx)"
       ]
     }
   ],
   "confidence": 0.66,
   "changed_files": [
     "frontend-file-summaries.txt",
-    "frontend/src/components/dashboard/PeriodSelector.tsx",
-    "frontend/src/components/entries/EntriesMobileList.tsx",
-    "frontend/src/components/entries/EntriesTable.tsx",
-    "frontend/src/components/entries/EntryForm.tsx",
-    "frontend/src/components/layout/AppHeader.tsx",
-    "frontend/src/components/layout/AppLayout.tsx",
-    "frontend/src/index.css",
-    "frontend/src/pages/DashboardPage.tsx",
-    "frontend/src/pages/EntriesPage.tsx",
+    "frontend/ANDROID_APK.md",
+    "frontend/android/.gitignore",
+    "frontend/android/app/build.gradle",
+    "frontend/android/app/capacitor.build.gradle",
+    "frontend/android/app/proguard-rules.pro",
+    "frontend/android/app/src/main/AndroidManifest.xml",
+    "frontend/android/app/src/main/java/com/expensesaver/MainActivity.java",
+    "frontend/android/app/src/main/java/com/expensesaver/WebViewConfig.java",
+    "frontend/android/app/src/main/res/drawable/splash.xml",
+    "frontend/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml",
+    "frontend/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml",
+    "frontend/android/app/src/main/res/values/colors.xml",
+    "frontend/android/app/src/main/res/values/ic_launcher_background.xml",
+    "frontend/android/app/src/main/res/values/strings.xml",
+    "frontend/android/app/src/main/res/values/styles.xml",
+    "frontend/android/app/src/main/res/xml/file_paths.xml",
+    "frontend/android/build.gradle",
+    "frontend/android/capacitor-cordova-android-plugins/.gitignore",
+    "frontend/android/capacitor-cordova-android-plugins/build.gradle",
+    "frontend/android/capacitor-cordova-android-plugins/cordova.variables.gradle",
+    "frontend/android/capacitor.settings.gradle",
+    "frontend/android/gradle.properties",
+    "frontend/android/gradle/wrapper/gradle-wrapper.properties",
+    "frontend/android/gradlew",
+    "frontend/android/gradlew.bat",
+    "frontend/android/settings.gradle",
+    "frontend/android/variables.gradle",
+    "frontend/capacitor.config.ts",
+    "frontend/scripts/android/build-debug-apk.sh",
     "project_state.json"
   ]
 }

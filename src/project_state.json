@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 7,
+  "projectStateVersion": 9,
   "summary": "Build an app to track expenses and savings with daily user input.",
   "architectural_notes": [
     "Add configurable currency formatting (default INR/₹) used consistently across all amount fields and summaries.",
@@ -98,6 +98,14 @@
         "REQ-12"
       ],
       "version": 1
+    },
+    {
+      "id": "feature-add-an-android-build-packaging-workflow-that-produces-an-installable-apk-for-the-existing-react-app-and-document-the-exact-steps-commands-to-generate-the-apk-so-it-can-be-installed-on-an-android-phone",
+      "title": "Add an Android build packaging workflow that produces an installable .apk for the existing React app, and document the exact steps/commands to generate the APK so it can be installed on an Android phone.",
+      "reqIds": [
+        "REQ-13"
+      ],
+      "version": 1
     }
   ],
   "new_feature_requests": [
@@ -130,6 +138,12 @@
     {
       "id": "AR-6",
       "summary": "Apply a black and red visual theme across the app (colors, typography, spacing) consistently.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-7",
+      "summary": "Provide an Android APK build of the app so it can be installed on a mobile device.",
       "reqIds": [],
       "status": "pending"
     }

@@ -1,11 +1,11 @@
 # Specification
 
 ## Summary
-**Goal:** Make the Dashboard and Entries pages mobile-first responsive and comfortable to use on phone screens.
+**Goal:** Provide an Android packaging workflow that builds an installable debug APK for the existing React app.
 
 **Planned changes:**
-- Update Dashboard layout for small viewports (≈320–430px) to avoid horizontal scrolling, reduce desktop-oriented spacing, and scale typography appropriately.
-- Improve mobile header/navigation behavior so navigation remains accessible, indicates the active page, and does not overlap or overflow content.
-- Adapt the Entries list for mobile by replacing the cramped table presentation with a mobile-friendly layout (e.g., stacked rows/cards) while keeping filters and edit/delete actions touch-friendly.
+- Add an Android wrapper project/configuration that loads the existing built web app inside an Android WebView (or equivalent) and can be built into an APK.
+- Add documentation (README or clearly named doc) with prerequisites and step-by-step commands to build a debug APK locally, including install commands and the output APK path/name.
+- Ensure the built debug APK can be installed on a physical Android device and launches to the existing sign-in screen with the current Internet Identity flow, using the same deployed canister endpoints as the web app.
 
-**User-visible outcome:** On phones, the Dashboard and Entries pages fit the screen without horizontal scrolling, navigation is reliably usable, and entries are easy to browse, filter, edit, and delete with touch-friendly controls.
+**User-visible outcome:** A user can generate and install a debug Android APK on their phone and open the app to the existing sign-in screen.
