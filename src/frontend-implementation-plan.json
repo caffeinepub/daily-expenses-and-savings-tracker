@@ -1,82 +1,123 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Android APK packaging for the existing React app (WebView wrapper)",
+  "title": "Type-specific mandatory category dropdowns + improved text contrast over background",
   "requirements": [
     {
-      "id": "REQ-13",
-      "summary": "Add an Android wrapper project that loads the built React app in a WebView and document the exact commands to build an installable debug APK.",
+      "id": "REQ-24",
+      "summary": "Split categories into distinct alphabetically-sorted Expense and Saving dropdown lists, exported from the shared category constants module.",
       "acceptanceCriteria": [
-        "Repository includes an Android wrapper project/configuration that loads the existing built web app in an Android WebView (or equivalent) and can be built into an APK.",
-        "A README (or clearly named documentation file) is added with step-by-step instructions to generate a debug APK locally, including prerequisites (Android Studio/SDK, Java), install commands, and the output path/name of the generated APK.",
-        "The produced debug APK can be installed on a physical Android device and successfully launches the app to the existing sign-in screen (Internet Identity flow remains functional).",
-        "No backend canister changes are required to support the APK build (the APK uses the same deployed canister endpoints as the web build)."
+        "The codebase has two distinct exported category lists (Expense and Saving) and they are alphabetically sorted exactly as specified.",
+        "No UI category dropdown uses the old shared list (Food, Movies, Loans EMI, Transport, Home Expenses, Credit Card, Others)."
       ],
       "file_operations": [
         {
-          "path": "frontend/capacitor.config.ts",
-          "operation": "create",
-          "description": "Add Capacitor configuration pointing to the React build output directory (e.g., dist) and defining a stable app id/name so Capacitor can generate and manage the Android wrapper project."
+          "path": "frontend/src/constants/categories.ts",
+          "operation": "modify",
+          "description": "Replace the single exported list with two exported lists: Expense categories (A–Z): AK Expenses, EB Bill, Internet Bill, Mobile Bill, Online Shopping, Snacks; Saving categories (A–Z): FD, PPF, RD, SIP, Saving Box. Ensure both are exported as the single source of truth for all category dropdowns."
+        }
+      ]
+    },
+    {
+      "id": "REQ-25",
+      "summary": "Make Category mandatory in Add New Entry and swap the dropdown options based on selected Type, clearing invalid selections on Type change.",
+      "acceptanceCriteria": [
+        "In Add New Entry, the Category field is required for both Expense and Saving types and the form cannot be submitted without a selected category.",
+        "The Category dropdown options change immediately when switching Type, and an invalid previous selection is cleared.",
+        "User sees clear English validation feedback when Category is missing."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/entries/EntryForm.tsx",
+          "operation": "modify",
+          "description": "Update Add New Entry form to: (1) use type-specific category lists from frontend/src/constants/categories.ts; (2) show only the Expense category dropdown when Type=Expense and only the Saving category dropdown when Type=Saving; (3) make Category required with English label \"Category *\" and English validation feedback that blocks submission when missing; (4) when Type changes, clear/reset Category if it is not valid for the newly selected Type."
         },
         {
-          "path": "frontend/android/.gitignore",
-          "operation": "create",
-          "description": "Add Android wrapper .gitignore to avoid committing local build outputs (e.g., build/, .gradle/, local.properties) while keeping the wrapper project source tracked."
+          "path": "frontend/src/constants/categories.ts",
+          "operation": "modify",
+          "description": "Ensure exports support Add New Entry requirements (separate lists and optionally a small helper to resolve categories by EntryType) so EntryForm reads from this single source of truth."
+        }
+      ]
+    },
+    {
+      "id": "REQ-26",
+      "summary": "Make Category mandatory in Edit Entry dialog and swap the dropdown options based on selected Type, clearing invalid selections on Type change and blocking save until valid.",
+      "acceptanceCriteria": [
+        "In Edit Entry, the Category field is required and the dialog cannot save changes without a selected category.",
+        "The Category dropdown options change immediately when switching Type, and an invalid previous selection is cleared.",
+        "User-facing text remains in English."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/entries/EditEntryDialog.tsx",
+          "operation": "modify",
+          "description": "Update Edit Entry dialog to: (1) use type-specific category lists from frontend/src/constants/categories.ts; (2) show only the Expense category dropdown when Type=Expense and only the Saving category dropdown when Type=Saving; (3) make Category required with English label \"Category *\" and English validation feedback that blocks saving when missing; (4) when Type changes, clear/reset Category if it is not valid for the newly selected Type, and prevent save until a valid category is selected."
         },
         {
-          "path": "frontend/android/build.gradle",
-          "operation": "create",
-          "description": "Create the top-level Gradle build configuration required to build the Android wrapper as a standard Android project."
+          "path": "frontend/src/constants/categories.ts",
+          "operation": "modify",
+          "description": "Ensure exports support Edit Entry requirements (separate lists and optionally a small helper to resolve categories by EntryType) so EditEntryDialog reads from this single source of truth."
+        }
+      ]
+    },
+    {
+      "id": "REQ-27",
+      "summary": "Remove explicit black text styling and ensure theme-token text colors and overlays provide readable contrast over the background across main pages and dialogs.",
+      "acceptanceCriteria": [
+        "No primary UI text relies on explicit black coloring; text color is driven by theme tokens (foreground/muted-foreground/etc.).",
+        "Text remains clearly readable over the current background image across the main pages and dialogs.",
+        "All user-facing text remains in English."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/index.css",
+          "operation": "modify",
+          "description": "Adjust theme variables (foreground/muted-foreground and related tokens if needed) and/or shared styling so default text remains readable over the saving-money background image, while keeping text color driven by theme tokens (no explicit black)."
         },
         {
-          "path": "frontend/android/settings.gradle",
-          "operation": "create",
-          "description": "Create Gradle settings for the Android wrapper, including app module inclusion and any required plugin configuration for WebView/Capacitor integration."
+          "path": "frontend/src/components/layout/AppLayout.tsx",
+          "operation": "modify",
+          "description": "Improve readability over the background by tuning the existing overlay opacity and/or related theme-token classes (e.g., bg-background/XX) to ensure consistent contrast across pages without introducing explicit black text styling."
         },
         {
-          "path": "frontend/android/gradle.properties",
-          "operation": "create",
-          "description": "Add Gradle properties needed for consistent local builds (e.g., AndroidX settings and build performance defaults)."
+          "path": "frontend/src/components/auth/AuthGate.tsx",
+          "operation": "modify",
+          "description": "Remove any explicit black text styling if present and tune the sign-in screen overlay/card styling (theme-token classes only) to ensure strong text contrast over the background image."
         },
         {
-          "path": "frontend/android/app/build.gradle",
-          "operation": "create",
-          "description": "Create the Android app module Gradle config for producing a debug APK, including app id, min/target SDK, signing (debug), and packaging of web assets into the APK."
+          "path": "frontend/src/pages/DashboardPage.tsx",
+          "operation": "modify",
+          "description": "Audit and replace any explicit black text styling (e.g., text-black, inline #000) with theme-driven text tokens (foreground/muted-foreground/etc.) and ensure headings/body text remain readable over the background."
         },
         {
-          "path": "frontend/android/app/src/main/AndroidManifest.xml",
-          "operation": "create",
-          "description": "Add Android manifest configuring Internet permission, WebView usage, and the main launcher activity. Ensure WebView supports required behaviors for Internet Identity (e.g., allowing JS, handling navigation)."
+          "path": "frontend/src/pages/EntriesPage.tsx",
+          "operation": "modify",
+          "description": "Audit and replace any explicit black text styling (e.g., text-black, inline #000) with theme-driven text tokens and ensure page intro text remains readable over the background."
         },
         {
-          "path": "frontend/android/app/src/main/res/values/strings.xml",
-          "operation": "create",
-          "description": "Add Android app strings (English only) for app name and any required WebView wrapper labels."
+          "path": "frontend/src/pages/DownloadApkPage.tsx",
+          "operation": "modify",
+          "description": "Audit and replace any explicit black text styling (e.g., text-black, inline #000) with theme-driven text tokens and ensure instructions remain readable over the background."
         },
         {
-          "path": "frontend/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml",
-          "operation": "create",
-          "description": "Add launcher icon resources for the APK; use existing branding as appropriate without introducing new image generation requirements."
+          "path": "frontend/src/components/entries/EntryForm.tsx",
+          "operation": "modify",
+          "description": "Audit and remove any explicit black text styling in the Add New Entry form, ensuring labels/help text use theme tokens and remain readable over the background."
         },
         {
-          "path": "frontend/android/app/src/main/java/com/expensesaver/MainActivity.java",
-          "operation": "create",
-          "description": "Create the main Android activity that hosts the WebView-based wrapper and loads the packaged web assets (or the configured app URL) so the app launches to the existing sign-in screen."
+          "path": "frontend/src/components/entries/EditEntryDialog.tsx",
+          "operation": "modify",
+          "description": "Audit and remove any explicit black text styling in the Edit Entry dialog, ensuring labels/help text use theme tokens and remain readable over the background."
         },
         {
-          "path": "frontend/android/app/src/main/java/com/expensesaver/WebViewConfig.java",
-          "operation": "create",
-          "description": "Add a small configuration helper to ensure WebView settings required for the app and Internet Identity are enabled (JavaScript, DOM storage, cookie behavior, and safe navigation handling)."
+          "path": "frontend/src/components/entries/EntriesTable.tsx",
+          "operation": "modify",
+          "description": "Audit and remove any explicit black text styling in the Entries list/table/filter UI, ensuring all text uses theme tokens and remains readable over the background."
         },
         {
-          "path": "frontend/scripts/android/build-debug-apk.sh",
-          "operation": "create",
-          "description": "Add a convenience script that builds the React web assets and then invokes the Android Gradle task to produce a debug APK, keeping all steps deterministic for local use."
-        },
-        {
-          "path": "frontend/ANDROID_APK.md",
-          "operation": "create",
-          "description": "Document step-by-step prerequisites and commands to generate and install a debug APK locally (including Android Studio/SDK + Java requirements, build commands, adb install command, and the resulting APK path such as frontend/android/app/build/outputs/apk/debug/app-debug.apk). Also explicitly note that no backend changes are required and the APK uses the same deployed canister configuration as the web build."
+          "path": "frontend/src/components/layout/AppHeader.tsx",
+          "operation": "modify",
+          "description": "Audit and remove any explicit black text styling in the header/nav, ensuring all text uses theme tokens and remains readable over the background/blurred header."
         }
       ]
     }

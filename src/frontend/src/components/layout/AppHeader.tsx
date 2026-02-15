@@ -1,11 +1,11 @@
 import { useGetCallerUserProfile } from '../../hooks/queries/useUserProfile';
 import LoginButton from '../auth/LoginButton';
 import { Button } from '@/components/ui/button';
-import { LayoutDashboard, Receipt } from 'lucide-react';
+import { LayoutDashboard, Receipt, Download } from 'lucide-react';
 
 interface AppHeaderProps {
-  currentPage: 'dashboard' | 'entries';
-  onNavigate: (page: 'dashboard' | 'entries') => void;
+  currentPage: 'dashboard' | 'entries' | 'download';
+  onNavigate: (page: 'dashboard' | 'entries' | 'download') => void;
 }
 
 export default function AppHeader({ currentPage, onNavigate }: AppHeaderProps) {
@@ -37,7 +37,7 @@ export default function AppHeader({ currentPage, onNavigate }: AppHeaderProps) {
             variant={currentPage === 'dashboard' ? 'default' : 'ghost'}
             size="sm"
             onClick={() => onNavigate('dashboard')}
-            className="flex-1 h-10 sm:h-9"
+            className="flex-1 h-10 sm:h-9 btn-interactive"
             aria-current={currentPage === 'dashboard' ? 'page' : undefined}
           >
             <LayoutDashboard className="mr-1.5 sm:mr-2 h-4 w-4" />
@@ -47,11 +47,21 @@ export default function AppHeader({ currentPage, onNavigate }: AppHeaderProps) {
             variant={currentPage === 'entries' ? 'default' : 'ghost'}
             size="sm"
             onClick={() => onNavigate('entries')}
-            className="flex-1 h-10 sm:h-9"
+            className="flex-1 h-10 sm:h-9 btn-interactive"
             aria-current={currentPage === 'entries' ? 'page' : undefined}
           >
             <Receipt className="mr-1.5 sm:mr-2 h-4 w-4" />
             <span className="text-sm">Entries</span>
+          </Button>
+          <Button
+            variant={currentPage === 'download' ? 'default' : 'ghost'}
+            size="sm"
+            onClick={() => onNavigate('download')}
+            className="flex-1 h-10 sm:h-9 btn-interactive"
+            aria-current={currentPage === 'download' ? 'page' : undefined}
+          >
+            <Download className="mr-1.5 sm:mr-2 h-4 w-4" />
+            <span className="text-sm">Download APK</span>
           </Button>
         </nav>
       </div>

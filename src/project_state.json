@@ -1,15 +1,22 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 9,
+  "projectStateVersion": 19,
   "summary": "Build an app to track expenses and savings with daily user input.",
   "architectural_notes": [
     "Add configurable currency formatting (default INR/₹) used consistently across all amount fields and summaries.",
-    "Design UI as mobile-first responsive (touch-friendly controls, readable typography, layouts that adapt to small screens)."
+    "Design UI as mobile-first responsive (touch-friendly controls, readable typography, layouts that adapt to small screens).",
+    "Update visual theme direction: remove black/red palette and switch to a vibrant color scheme applied consistently across the UI.",
+    "Add a background image themed around “saving money” and ensure readability/contrast of UI elements over it (e.g., overlay/scrim as needed).",
+    "Category must be mandatory; show two separate category dropdowns based on selected type (Expense vs Saving) with alphabetically sorted options.",
+    "Expense categories: AK Expenses, EB Bill, Internet Bill, Mobile Bill, Online Shopping, Snacks (sorted A–Z). Saving categories: FD, PPF, RD, SIP, Saving Box (sorted A–Z).",
+    "Avoid black text; ensure text colors automatically maintain good contrast over the saving-money background image (use overlay/scrim and theme tokens as needed)."
   ],
   "known_issues": [
-    "App currently shows amounts in USD ($); user requests INR (₹) instead."
+    "App currently shows amounts in USD ($); user requests INR (₹) instead.",
+    "Android APK install fails with 'problem parsing the package' / 'not supported' (likely APK download is corrupted/incomplete or a non-APK/HTML file is being downloaded).",
+    "Hosted draft app build can expire, breaking access to the APK download page/link."
   ],
-  "isFixRequest": false,
+  "isFixRequest": true,
   "existing_features": [
     {
       "id": "feature-implement-internet-identity-sign-in-and-per-user-data-isolation-so-each-signed-in-user-can-only-view-and-manage-their-own-expenses-and-savings-entries",
@@ -106,6 +113,110 @@
         "REQ-13"
       ],
       "version": 1
+    },
+    {
+      "id": "feature-add-a-new-app-page-for-downloading-the-latest-android-apk-including-a-clear-primary-download-button-link-that-downloads-a-static-apk-file-from-the-frontend-s-public-assets-no-backend-involvement",
+      "title": "Add a new app page for downloading the latest Android APK, including a clear primary download button/link that downloads a static APK file from the frontend’s public assets (no backend involvement).",
+      "reqIds": [
+        "REQ-14"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-existing-navigation-ui-to-allow-users-to-reach-the-new-apk-download-page-reliably-on-mobile-and-desktop",
+      "title": "Update the existing navigation UI to allow users to reach the new APK download page reliably on mobile and desktop.",
+      "reqIds": [
+        "REQ-15"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-replace-the-free-text-category-input-with-an-optional-dropdown-selector-in-both-the-add-new-entry-form-and-the-edit-entry-dialog-using-exactly-these-options-food-movies-loans-emi-transport-home-expenses-credit-card-others",
+      "title": "Replace the free-text Category input with an optional dropdown selector in both the Add New Entry form and the Edit Entry dialog, using exactly these options: Food, Movies, Loans EMI, Transport, Home Expenses, Credit Card, Others.",
+      "reqIds": [
+        "REQ-17"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-app-s-visual-theme-to-a-red-and-black-look-across-the-ui-by-adjusting-the-global-theme-variables-and-ensuring-primary-accent-destructive-colors-and-backgrounds-align-with-a-black-base-and-red-highlights-in-both-light-and-dark-modes-or-by-making-dark-mode-the-default",
+      "title": "Update the app’s visual theme to a red-and-black look across the UI by adjusting the global theme variables and ensuring primary/accent/destructive colors and backgrounds align with a black base and red highlights in both light and dark modes (or by making dark mode the default).",
+      "reqIds": [
+        "REQ-18"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-replace-the-current-red-and-black-theme-with-a-vibrant-color-theme-applied-consistently-across-the-app-dashboard-entries-download-apk-and-the-sign-in-screen-ensuring-primary-accent-destructive-colors-and-backgrounds-no-longer-use-a-black-red-palette",
+      "title": "Replace the current red-and-black theme with a vibrant color theme applied consistently across the app (Dashboard, Entries, Download APK, and the sign-in screen), ensuring primary/accent/destructive colors and backgrounds no longer use a black/red palette.",
+      "reqIds": [
+        "REQ-19"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-app-s-default-theme-behavior-so-the-initial-experience-matches-the-new-vibrant-theme-i-e-remove-reliance-on-a-dark-black-default-appearance",
+      "title": "Update the app’s default theme behavior so the initial experience matches the new vibrant theme (i.e., remove reliance on a dark/black default appearance).",
+      "reqIds": [
+        "REQ-20"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-full-page-background-image-with-a-saving-money-visual-theme-and-apply-it-as-the-app-background-in-a-way-that-works-well-with-the-vibrant-color-theme-including-maintaining-text-card-readability",
+      "title": "Add a full-page background image with a “saving money” visual theme and apply it as the app background in a way that works well with the vibrant color theme (including maintaining text/card readability).",
+      "reqIds": [
+        "REQ-21"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-subtle-continuous-animated-overlay-effect-on-top-of-the-existing-full-page-saving-money-background-image-used-by-the-app-background-class-so-the-app-feels-more-lively-while-keeping-all-content-readable",
+      "title": "Add a subtle, continuous animated overlay effect on top of the existing full-page saving-money background image (used by the `.app-background` class) so the app feels more lively while keeping all content readable.",
+      "reqIds": [
+        "REQ-22"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-lightweight-ui-motion-enhancements-across-the-main-navigation-experience-including-smooth-page-transitions-when-switching-between-dashboard-entries-and-download-apk-and-subtle-hover-press-micro-interactions-on-key-interactive-elements",
+      "title": "Add lightweight UI motion enhancements across the main navigation experience, including smooth page transitions when switching between Dashboard, Entries, and Download APK, and subtle hover/press micro-interactions on key interactive elements.",
+      "reqIds": [
+        "REQ-23"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-replace-the-single-shared-category-options-list-with-two-separate-alphabetically-sorted-dropdown-category-lists-one-for-expense-entries-and-one-for-saving-entries-expense-categories-a-z-ak-expenses-eb-bill-internet-bill-mobile-bill-online-shopping-snacks-saving-categories-a-z-fd-ppf-rd-sip-saving-box-expose-these-lists-via-the-existing-category-constants-module-so-all-category-dropdowns-read-from-the-same-source-of-truth",
+      "title": "Replace the single shared Category options list with two separate, alphabetically-sorted dropdown category lists: one for Expense entries and one for Saving entries.\n\nExpense categories (A–Z): AK Expenses, EB Bill, Internet Bill, Mobile Bill, Online Shopping, Snacks.\nSaving categories (A–Z): FD, PPF, RD, SIP, Saving Box.\n\nExpose these lists via the existing category constants module so all category dropdowns read from the same source of truth.",
+      "reqIds": [
+        "REQ-24"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-add-new-entry-form-so-category-is-mandatory-and-uses-two-separate-dropdowns-based-on-the-selected-type-when-type-is-expense-show-only-the-expense-category-dropdown-when-type-is-saving-show-only-the-saving-category-dropdown-ensure-changing-the-type-resets-clears-any-previously-selected-category-if-it-is-not-valid-for-the-newly-selected-type-update-all-user-facing-labels-and-validation-messages-in-english-e-g-show-category-and-prevent-submission-when-no-category-is-selected",
+      "title": "Update the Add New Entry form so Category is mandatory and uses two separate dropdowns based on the selected Type:\n- When Type is Expense, show only the Expense category dropdown.\n- When Type is Saving, show only the Saving category dropdown.\n\nEnsure changing the Type resets/clears any previously selected Category if it is not valid for the newly selected Type.\n\nUpdate all user-facing labels and validation messages in English (e.g., show “Category *” and prevent submission when no category is selected).",
+      "reqIds": [
+        "REQ-25"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-edit-entry-dialog-so-category-is-mandatory-and-uses-two-separate-dropdowns-based-on-the-selected-type-when-type-is-expense-show-only-the-expense-category-dropdown-when-type-is-saving-show-only-the-saving-category-dropdown-ensure-changing-the-type-resets-clears-any-previously-selected-category-if-it-is-not-valid-for-the-newly-selected-type-and-block-saving-until-a-valid-category-is-selected",
+      "title": "Update the Edit Entry dialog so Category is mandatory and uses two separate dropdowns based on the selected Type:\n- When Type is Expense, show only the Expense category dropdown.\n- When Type is Saving, show only the Saving category dropdown.\n\nEnsure changing the Type resets/clears any previously selected Category if it is not valid for the newly selected Type, and block saving until a valid category is selected.",
+      "reqIds": [
+        "REQ-26"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-remove-black-colored-text-from-the-ui-by-eliminating-explicit-black-text-styling-e-g-text-black-inline-000-or-equivalent-and-ensure-text-colors-consistently-use-theme-driven-foreground-muted-foreground-tokens-so-they-contrast-clearly-against-the-existing-saving-money-background-image-and-overlay-if-needed-adjust-theme-variables-and-or-overlay-opacity-so-default-text-is-readable-across-pages-dashboard-entries-download-apk-and-sign-in-screen",
+      "title": "Remove black-colored text from the UI by eliminating explicit black text styling (e.g., `text-black`, inline `#000`, or equivalent) and ensure text colors consistently use theme-driven foreground/muted-foreground tokens so they contrast clearly against the existing saving-money background image and overlay.\n\nIf needed, adjust theme variables and/or overlay opacity so default text is readable across pages (Dashboard, Entries, Download APK, and sign-in screen).",
+      "reqIds": [
+        "REQ-27"
+      ],
+      "version": 1
     }
   ],
   "new_feature_requests": [
@@ -136,14 +247,58 @@
       "status": "pending"
     },
     {
-      "id": "AR-6",
-      "summary": "Apply a black and red visual theme across the app (colors, typography, spacing) consistently.",
+      "id": "AR-7",
+      "summary": "Provide an Android APK build of the app so it can be installed on a mobile device.",
       "reqIds": [],
       "status": "pending"
     },
     {
-      "id": "AR-7",
-      "summary": "Provide an Android APK build of the app so it can be installed on a mobile device.",
+      "id": "AR-8",
+      "summary": "Add an APK download flow so users can directly download the latest Android .apk (e.g., from within the app or via a hosted link/page).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-11",
+      "summary": "Add repository documentation describing the exact steps to build the APK and publish/replace the ‘latest APK’ file that the app downloads (including where to copy the built APK in the frontend public assets before deploying).",
+      "reqIds": [
+        "REQ-16"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-12",
+      "summary": "Add a predefined Category dropdown for entries with options: Food, Movies, Loans EMI, Transport, Home Expenses, Credit Card, and Others.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-13",
+      "summary": "Replace the black-and-red theme with a vibrant color theme applied consistently across the app UI.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-14",
+      "summary": "Add a “saving money” background image to the app (e.g., as a page/app background) and ensure it works well with the chosen vibrant theme.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-15",
+      "summary": "Add simple UI animations to complement the new vibrant theme/background (e.g., subtle animated background or transitions).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-16",
+      "summary": "Make Category mandatory and use two separate Category dropdowns based on entry type (Expense vs Saving), with alphabetically-sorted predefined options for each type.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-17",
+      "summary": "Update UI text colors to avoid black text and ensure strong contrast/readability over the saving-money background image across the app.",
       "reqIds": [],
       "status": "pending"
     }

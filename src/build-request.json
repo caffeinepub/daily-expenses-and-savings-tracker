@@ -1,39 +1,106 @@
 {
   "kind": "build_request",
-  "title": "Provide an installable Android APK build for the app",
+  "title": "Add mandatory type-specific category dropdowns and improve text contrast over background",
   "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-13",
-      "text": "Add an Android build packaging workflow that produces an installable .apk for the existing React app, and document the exact steps/commands to generate the APK so it can be installed on an Android phone.",
+      "id": "REQ-24",
+      "text": "Replace the single shared Category options list with two separate, alphabetically-sorted dropdown category lists: one for Expense entries and one for Saving entries.\n\nExpense categories (A–Z): AK Expenses, EB Bill, Internet Bill, Mobile Bill, Online Shopping, Snacks.\nSaving categories (A–Z): FD, PPF, RD, SIP, Saving Box.\n\nExpose these lists via the existing category constants module so all category dropdowns read from the same source of truth.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-5"
+          "msg-1"
         ],
         "quotes": [
-          "i want this in .apk format to install in mobile"
+          "add some category as AK Expenses, Internet Bill, Mobile Bill, EB Bill, Online Shopping, Snacks and also arrange in Alphabets wise.\n\nSavings category will be different that should be PPF, Saving Box, SIP, RD, FD.",
+          "yes two separate dropdowns"
         ]
       },
       "acceptanceCriteria": [
-        "Repository includes an Android wrapper project/configuration that loads the existing built web app in an Android WebView (or equivalent) and can be built into an APK.",
-        "A README (or clearly named documentation file) is added with step-by-step instructions to generate a debug APK locally, including prerequisites (Android Studio/SDK, Java), install commands, and the output path/name of the generated APK.",
-        "The produced debug APK can be installed on a physical Android device and successfully launches the app to the existing sign-in screen (Internet Identity flow remains functional).",
-        "No backend canister changes are required to support the APK build (the APK uses the same deployed canister endpoints as the web build)."
+        "The codebase has two distinct exported category lists (Expense and Saving) and they are alphabetically sorted exactly as specified.",
+        "No UI category dropdown uses the old shared list (Food, Movies, Loans EMI, Transport, Home Expenses, Credit Card, Others)."
+      ]
+    },
+    {
+      "id": "REQ-25",
+      "text": "Update the Add New Entry form so Category is mandatory and uses two separate dropdowns based on the selected Type:\n- When Type is Expense, show only the Expense category dropdown.\n- When Type is Saving, show only the Saving category dropdown.\n\nEnsure changing the Type resets/clears any previously selected Category if it is not valid for the newly selected Type.\n\nUpdate all user-facing labels and validation messages in English (e.g., show “Category *” and prevent submission when no category is selected).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "category must be mandatory",
+          "yes two separate dropdowns"
+        ]
+      },
+      "acceptanceCriteria": [
+        "In Add New Entry, the Category field is required for both Expense and Saving types and the form cannot be submitted without a selected category.",
+        "The Category dropdown options change immediately when switching Type, and an invalid previous selection is cleared.",
+        "User sees clear English validation feedback when Category is missing."
+      ]
+    },
+    {
+      "id": "REQ-26",
+      "text": "Update the Edit Entry dialog so Category is mandatory and uses two separate dropdowns based on the selected Type:\n- When Type is Expense, show only the Expense category dropdown.\n- When Type is Saving, show only the Saving category dropdown.\n\nEnsure changing the Type resets/clears any previously selected Category if it is not valid for the newly selected Type, and block saving until a valid category is selected.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "category must be mandatory",
+          "Savings category will be different",
+          "yes two separate dropdowns"
+        ]
+      },
+      "acceptanceCriteria": [
+        "In Edit Entry, the Category field is required and the dialog cannot save changes without a selected category.",
+        "The Category dropdown options change immediately when switching Type, and an invalid previous selection is cleared.",
+        "User-facing text remains in English."
+      ]
+    },
+    {
+      "id": "REQ-27",
+      "text": "Remove black-colored text from the UI by eliminating explicit black text styling (e.g., `text-black`, inline `#000`, or equivalent) and ensure text colors consistently use theme-driven foreground/muted-foreground tokens so they contrast clearly against the existing saving-money background image and overlay.\n\nIf needed, adjust theme variables and/or overlay opacity so default text is readable across pages (Dashboard, Entries, Download APK, and sign-in screen).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "please remove the black colour in words, add the colors that should contrast from background image"
+        ]
+      },
+      "acceptanceCriteria": [
+        "No primary UI text relies on explicit black coloring; text color is driven by theme tokens (foreground/muted-foreground/etc.).",
+        "Text remains clearly readable over the current background image across the main pages and dialogs.",
+        "All user-facing text remains in English."
       ]
     }
   ],
   "constraints": [
-    "Do not modify any files under frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, or any sources under frontend/src/components/ui (compose existing components instead).",
-    "Keep all user-facing text in English."
+    "Do not modify files under frontend/src/components/ui (shadcn components); compose them from app components instead.",
+    "Do not edit immutable paths listed in SYSTEM_CONTEXT (e.g., frontend/src/hooks/useInternetIdentity.ts(x), frontend/src/hooks/useActor.ts, frontend/src/main.tsx).",
+    "Keep backend as a single Motoko actor; do not introduce additional backend services."
   ],
   "nonGoals": [
-    "Publishing to Google Play Store.",
-    "Building an iOS IPA.",
-    "Adding native mobile-only features (push notifications, GPS, contacts, etc.)."
+    "Do not add new category free-text inputs; categories must remain dropdown-based.",
+    "Do not change backend data schema for entries unless strictly required for the UI changes.",
+    "Do not add new filters or analytics beyond updating category selection behavior in add/edit flows."
   ],
   "imageRequirements": {
     "required": [],
     "edits": []
+  },
+  "userProfileUpdate": {
+    "goalsToAdd": [],
+    "goalsToRemove": [],
+    "preferencesToAdd": [],
+    "preferencesToRemove": [],
+    "miscToAdd": [],
+    "miscToRemove": [],
+    "fieldsToSet": {},
+    "fieldsToDelete": []
   }
 }

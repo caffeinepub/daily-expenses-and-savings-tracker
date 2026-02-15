@@ -14,9 +14,17 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { toast } from 'sonner';
 import { CalendarIcon } from 'lucide-react';
 import { format } from 'date-fns';
+import { EXPENSE_CATEGORIES, SAVING_CATEGORIES } from '../../constants/categories';
 
 interface EditEntryDialogProps {
   entry: Entry;
@@ -32,6 +40,16 @@ export default function EditEntryDialog({ entry, onClose }: EditEntryDialogProps
 
   const updateEntry = useAddOrUpdateEntry();
 
+  // Get the appropriate category list based on entry type
+  const categoryList = entryType === EntryType.expense ? EXPENSE_CATEGORIES : SAVING_CATEGORIES;
+
+  // Clear category when type changes if it's not valid for the new type
+  useEffect(() => {
+    if (category && !(categoryList as readonly string[]).includes(category)) {
+      setCategory('');
+    }
+  }, [entryType, category, categoryList]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -41,13 +59,18 @@ export default function EditEntryDialog({ entry, onClose }: EditEntryDialogProps
       return;
     }
 
+    if (!category) {
+      toast.error('Please select a category');
+      return;
+    }
+
     try {
       await updateEntry.mutateAsync({
         id: entry.id,
         date: BigInt(date.getTime() * 1_000_000),
         entryType,
         amount: amountNum,
-        category: category.trim() || null,
+        category: category,
         note: note.trim() || null,
       });
 
@@ -120,13 +143,19 @@ export default function EditEntryDialog({ entry, onClose }: EditEntryDialogProps
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="edit-category">Category (optional)</Label>
-            <Input
-              id="edit-category"
-              placeholder="e.g., Food, Transport"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-            />
+            <Label htmlFor="edit-category">Category *</Label>
+            <Select value={category} onValueChange={setCategory} required>
+              <SelectTrigger id="edit-category">
+                <SelectValue placeholder="Select category" />
+              </SelectTrigger>
+              <SelectContent>
+                {categoryList.map((cat) => (
+                  <SelectItem key={cat} value={cat}>
+                    {cat}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           <div className="space-y-2">

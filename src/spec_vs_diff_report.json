@@ -1,84 +1,46 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-02-12T07:38:55.280Z",
-  "summary": "Diff adds an Android wrapper project (Capacitor-based) under frontend/android and a new build guide file, but the provided documentation appears truncated/incomplete in the diff summary and many unrelated frontend UI changes were also introduced that were not requested by REQ-13.",
+  "generatedAt": "2026-02-15T12:57:49.133Z",
+  "summary": "REQ-24 is implemented via new EXPENSE_CATEGORIES and SAVING_CATEGORIES constants and used by Add/Edit flows. REQ-25/26 appear largely implemented (type-specific category lists, clearing invalid category on type change, and blocking submit/save when category missing), but the diff is truncated so required field labeling (“Category *”) and any in-form validation text can’t be fully verified. REQ-27 is partially addressed (theme tokens and stronger overlays for readability), but the diff does not provide evidence that all explicit black text styling (e.g., text-black / #000) has been eliminated across the UI.",
   "missing_requirements": [
     {
-      "id": "REQ-13",
-      "requirement": "Add a README (or clearly named documentation file) with step-by-step instructions to generate a debug APK locally, including prerequisites, install commands, and the output path/name of the generated APK.",
-      "reason": "The added documentation file shown in the diff is truncated and stops at the beginning of the Capacitor CLI section, so the required step-by-step build commands, install commands, and the exact debug APK output path/name are not evidenced in the provided diff summary.",
+      "id": "REQ-25",
+      "requirement": "Update the Add New Entry form so Category is mandatory with clear English required labeling (e.g., “Category *”) and validation feedback when missing.",
+      "reason": "While submission is blocked with an English toast error (“Please select a category”), the diff for EntryForm.tsx is truncated before the Category field UI, so it’s not possible to confirm the label text includes “Category *” or that the category field itself is visually marked required.",
       "evidence": [
-        "frontend/ANDROID_APK.md"
+        "frontend/src/components/entries/EntryForm.tsx (truncated)"
       ]
     },
     {
-      "id": "REQ-13",
-      "requirement": "No backend canister changes are required (APK uses the same deployed canister endpoints as the web build).",
-      "reason": "The diff summary does not provide evidence about canister endpoint configuration (e.g., environment variables, network config) or explicitly state that the Android wrapper points to the same deployed endpoints; only Android wrapper files are shown.",
+      "id": "REQ-26",
+      "requirement": "Update the Edit Entry dialog so Category is mandatory with clear English required labeling (e.g., “Category *”) and block saving until a valid category is selected.",
+      "reason": "Blocking save appears implemented via toast error when category is empty, but the diff is truncated before the Category field rendering, so it’s not possible to confirm the required label (“Category *”) or exact UI validation messaging in the dialog content.",
       "evidence": [
-        "frontend/android/app/src/main/AndroidManifest.xml",
-        "frontend/android/app/src/main/java/com/expensesaver/MainActivity.java",
-        "frontend/android/app/src/main/java/com/expensesaver/WebViewConfig.java",
-        "frontend/capacitor.config.ts"
+        "frontend/src/components/entries/EditEntryDialog.tsx (truncated)"
+      ]
+    },
+    {
+      "id": "REQ-27",
+      "requirement": "Remove black-colored text from the UI by eliminating explicit black text styling (e.g., `text-black`, inline `#000`, or equivalent) and ensure text colors consistently use theme-driven tokens across pages and dialogs.",
+      "reason": "The diff shows theme variable updates and higher-opacity overlays for readability, but it does not show removal of explicit black text classes/values across the codebase. Without evidence of changes in other components/pages, compliance with “no explicit black text styling anywhere” cannot be verified.",
+      "evidence": [
+        "frontend/src/index.css",
+        "frontend/src/components/layout/AppLayout.tsx",
+        "frontend/src/components/auth/AuthGate.tsx"
       ]
     }
   ],
-  "hallucinated_features": [
-    {
-      "description": "Mobile-responsive UI rework across multiple pages/components (layout/header/forms/tables/dashboard typography and spacing).",
-      "reason": "REQ-13 is solely about adding an Android APK packaging workflow and documentation; these UI/UX changes are not requested and increase scope.",
-      "evidence": [
-        "frontend-file-summaries.txt (entries for frontend/src/components/layout/AppLayout.tsx, AppHeader.tsx, EntryForm.tsx, EntriesTable.tsx, PeriodSelector.tsx, DashboardPage.tsx, EntriesPage.tsx, index.css, etc.)"
-      ]
-    },
-    {
-      "description": "Currency formatting changes to INR (₹) and introduction of a shared currency utility, plus updating delete confirmation to show INR formatting.",
-      "reason": "Not requested by REQ-13 (Android APK packaging).",
-      "evidence": [
-        "frontend-file-summaries.txt (entries for frontend/src/utils/currency.ts and frontend/src/components/entries/DeleteEntryConfirmDialog.tsx)"
-      ]
-    },
-    {
-      "description": "New mobile-only entries list component (EntriesMobileList) and corresponding EntriesTable behavior changes to switch views by screen size.",
-      "reason": "Not requested by REQ-13 (Android APK packaging).",
-      "evidence": [
-        "frontend-file-summaries.txt (entry for frontend/src/components/entries/EntriesMobileList.tsx and frontend/src/components/entries/EntriesTable.tsx)"
-      ]
-    }
-  ],
-  "confidence": 0.66,
+  "hallucinated_features": [],
+  "confidence": 0.62,
   "changed_files": [
     "frontend-file-summaries.txt",
-    "frontend/ANDROID_APK.md",
-    "frontend/android/.gitignore",
-    "frontend/android/app/build.gradle",
-    "frontend/android/app/capacitor.build.gradle",
-    "frontend/android/app/proguard-rules.pro",
-    "frontend/android/app/src/main/AndroidManifest.xml",
-    "frontend/android/app/src/main/java/com/expensesaver/MainActivity.java",
-    "frontend/android/app/src/main/java/com/expensesaver/WebViewConfig.java",
-    "frontend/android/app/src/main/res/drawable/splash.xml",
-    "frontend/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml",
-    "frontend/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml",
-    "frontend/android/app/src/main/res/values/colors.xml",
-    "frontend/android/app/src/main/res/values/ic_launcher_background.xml",
-    "frontend/android/app/src/main/res/values/strings.xml",
-    "frontend/android/app/src/main/res/values/styles.xml",
-    "frontend/android/app/src/main/res/xml/file_paths.xml",
-    "frontend/android/build.gradle",
-    "frontend/android/capacitor-cordova-android-plugins/.gitignore",
-    "frontend/android/capacitor-cordova-android-plugins/build.gradle",
-    "frontend/android/capacitor-cordova-android-plugins/cordova.variables.gradle",
-    "frontend/android/capacitor.settings.gradle",
-    "frontend/android/gradle.properties",
-    "frontend/android/gradle/wrapper/gradle-wrapper.properties",
-    "frontend/android/gradlew",
-    "frontend/android/gradlew.bat",
-    "frontend/android/settings.gradle",
-    "frontend/android/variables.gradle",
-    "frontend/capacitor.config.ts",
-    "frontend/scripts/android/build-debug-apk.sh",
+    "frontend/src/components/auth/AuthGate.tsx",
+    "frontend/src/components/entries/EditEntryDialog.tsx",
+    "frontend/src/components/entries/EntryForm.tsx",
+    "frontend/src/components/layout/AppLayout.tsx",
+    "frontend/src/constants/categories.ts",
+    "frontend/src/index.css",
     "project_state.json"
   ]
 }

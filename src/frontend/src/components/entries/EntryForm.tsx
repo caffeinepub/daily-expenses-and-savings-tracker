@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAddOrUpdateEntry } from '../../hooks/queries/useEntries';
 import { EntryType } from '../../backend';
 import { Button } from '@/components/ui/button';
@@ -8,9 +8,17 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { toast } from 'sonner';
 import { CalendarIcon, Plus } from 'lucide-react';
 import { format } from 'date-fns';
+import { EXPENSE_CATEGORIES, SAVING_CATEGORIES } from '../../constants/categories';
 
 export default function EntryForm() {
   const [date, setDate] = useState<Date>(new Date());
@@ -21,6 +29,16 @@ export default function EntryForm() {
 
   const addEntry = useAddOrUpdateEntry();
 
+  // Get the appropriate category list based on entry type
+  const categoryList = entryType === EntryType.expense ? EXPENSE_CATEGORIES : SAVING_CATEGORIES;
+
+  // Clear category when type changes if it's not valid for the new type
+  useEffect(() => {
+    if (category && !(categoryList as readonly string[]).includes(category)) {
+      setCategory('');
+    }
+  }, [entryType, category, categoryList]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -30,13 +48,18 @@ export default function EntryForm() {
       return;
     }
 
+    if (!category) {
+      toast.error('Please select a category');
+      return;
+    }
+
     try {
       await addEntry.mutateAsync({
         id: null,
         date: BigInt(date.getTime() * 1_000_000),
         entryType,
         amount: amountNum,
-        category: category.trim() || null,
+        category: category,
         note: note.trim() || null,
       });
 
@@ -83,7 +106,7 @@ export default function EntryForm() {
                 <Button
                   type="button"
                   variant={entryType === EntryType.expense ? 'default' : 'outline'}
-                  className="flex-1 h-10 text-sm"
+                  className="flex-1 h-10 text-sm btn-interactive"
                   onClick={() => setEntryType(EntryType.expense)}
                 >
                   Expense
@@ -91,7 +114,7 @@ export default function EntryForm() {
                 <Button
                   type="button"
                   variant={entryType === EntryType.saving ? 'default' : 'outline'}
-                  className="flex-1 h-10 text-sm"
+                  className="flex-1 h-10 text-sm btn-interactive"
                   onClick={() => setEntryType(EntryType.saving)}
                 >
                   Saving
@@ -116,14 +139,19 @@ export default function EntryForm() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="category" className="text-sm">Category (optional)</Label>
-              <Input
-                id="category"
-                placeholder="e.g., Food, Transport"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                className="h-10 text-sm"
-              />
+              <Label htmlFor="category" className="text-sm">Category *</Label>
+              <Select value={category} onValueChange={setCategory} required>
+                <SelectTrigger id="category" className="h-10 text-sm">
+                  <SelectValue placeholder="Select category" />
+                </SelectTrigger>
+                <SelectContent>
+                  {categoryList.map((cat) => (
+                    <SelectItem key={cat} value={cat}>
+                      {cat}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
           </div>
 
@@ -139,7 +167,7 @@ export default function EntryForm() {
             />
           </div>
 
-          <Button type="submit" className="w-full h-10 sm:h-9 text-sm" disabled={addEntry.isPending}>
+          <Button type="submit" className="w-full h-10 sm:h-9 text-sm btn-interactive" disabled={addEntry.isPending}>
             <Plus className="mr-2 h-4 w-4" />
             {addEntry.isPending ? 'Adding...' : 'Add Entry'}
           </Button>
