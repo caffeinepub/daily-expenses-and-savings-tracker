@@ -1,69 +1,117 @@
-import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Download, Smartphone, AlertCircle } from 'lucide-react';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Button } from '@/components/ui/button';
+import { Download, Smartphone, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 export default function DownloadApkPage() {
-  return (
-    <div className="max-w-3xl mx-auto space-y-6">
-      <div className="space-y-2">
-        <h1 className="text-2xl sm:text-3xl font-bold">Download Android App</h1>
-        <p className="text-sm sm:text-base text-muted-foreground">
-          Install Expense Saver on your Android device for a native mobile experience.
-        </p>
-      </div>
+  const handleDownload = () => {
+    const link = document.createElement('a');
+    link.href = '/expense-saver.apk';
+    link.download = 'expense-saver.apk';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
-      <Alert>
-        <AlertCircle className="h-4 w-4" />
-        <AlertTitle>Important Note</AlertTitle>
-        <AlertDescription>
-          This is a debug APK for testing purposes. You may need to enable "Install from Unknown Sources" in your device settings.
-        </AlertDescription>
-      </Alert>
+  return (
+    <div className="space-y-4 sm:space-y-6 max-w-3xl mx-auto">
+      <div>
+        <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">Download Android App</h2>
+        <p className="text-sm sm:text-base text-muted-foreground mt-1">Install Expense Saver on your Android device</p>
+      </div>
 
       <Card>
         <CardHeader>
-          <div className="flex items-center gap-3">
-            <div className="p-3 rounded-lg bg-primary/10">
-              <Smartphone className="h-6 w-6 text-primary" />
-            </div>
-            <div>
-              <CardTitle>Expense Saver APK</CardTitle>
-              <CardDescription>Version 1.0.0 (Debug Build)</CardDescription>
-            </div>
-          </div>
+          <CardTitle className="flex items-center gap-2">
+            <Smartphone className="h-5 w-5" />
+            Android APK
+          </CardTitle>
+          <CardDescription>
+            Download and install the Expense Saver app directly on your Android device
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <h3 className="font-semibold text-sm">System Requirements:</h3>
-            <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
-              <li>Android 5.0 (Lollipop) or higher</li>
-              <li>Minimum 50 MB free storage space</li>
-              <li>Internet connection for syncing data</li>
-            </ul>
-          </div>
-
-          <div className="space-y-2">
-            <h3 className="font-semibold text-sm">Installation Steps:</h3>
-            <ol className="text-sm text-muted-foreground space-y-1 list-decimal list-inside">
-              <li>Download the APK file using the button below</li>
-              <li>Open the downloaded file on your Android device</li>
-              <li>If prompted, allow installation from unknown sources</li>
-              <li>Follow the on-screen instructions to complete installation</li>
-              <li>Launch the app and sign in with your account</li>
-            </ol>
-          </div>
-
-          <Button className="w-full btn-interactive" size="lg" asChild>
-            <a href="/assets/app-debug.apk" download="expense-saver.apk">
-              <Download className="mr-2 h-5 w-5" />
-              Download APK
-            </a>
+          <Button
+            onClick={handleDownload}
+            size="lg"
+            className="w-full btn-interactive shadow-soft"
+          >
+            <Download className="mr-2 h-5 w-5" />
+            Download APK
           </Button>
 
-          <p className="text-xs text-muted-foreground text-center">
-            By downloading this app, you agree to use it for testing purposes only.
-          </p>
+          <Alert>
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription className="text-sm">
+              This is a debug APK for testing purposes. You may need to enable "Install from Unknown Sources" in your device settings.
+            </AlertDescription>
+          </Alert>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Installation Instructions</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="space-y-3">
+            <div className="flex gap-3">
+              <CheckCircle2 className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+              <div>
+                <p className="font-medium text-sm">Step 1: Download the APK</p>
+                <p className="text-sm text-muted-foreground">Click the download button above to get the APK file</p>
+              </div>
+            </div>
+            <div className="flex gap-3">
+              <CheckCircle2 className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+              <div>
+                <p className="font-medium text-sm">Step 2: Enable Unknown Sources</p>
+                <p className="text-sm text-muted-foreground">
+                  Go to Settings → Security → Enable "Install from Unknown Sources"
+                </p>
+              </div>
+            </div>
+            <div className="flex gap-3">
+              <CheckCircle2 className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+              <div>
+                <p className="font-medium text-sm">Step 3: Install the App</p>
+                <p className="text-sm text-muted-foreground">
+                  Open the downloaded APK file and follow the installation prompts
+                </p>
+              </div>
+            </div>
+            <div className="flex gap-3">
+              <CheckCircle2 className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+              <div>
+                <p className="font-medium text-sm">Step 4: Launch and Enjoy</p>
+                <p className="text-sm text-muted-foreground">
+                  Open the app and sign in with your Internet Identity
+                </p>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>System Requirements</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ul className="space-y-2 text-sm text-muted-foreground">
+            <li className="flex items-center gap-2">
+              <CheckCircle2 className="h-4 w-4 text-primary" />
+              Android 7.0 (Nougat) or higher
+            </li>
+            <li className="flex items-center gap-2">
+              <CheckCircle2 className="h-4 w-4 text-primary" />
+              Minimum 50 MB free storage space
+            </li>
+            <li className="flex items-center gap-2">
+              <CheckCircle2 className="h-4 w-4 text-primary" />
+              Internet connection required for syncing
+            </li>
+          </ul>
         </CardContent>
       </Card>
     </div>

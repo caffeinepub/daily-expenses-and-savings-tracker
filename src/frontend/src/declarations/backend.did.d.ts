@@ -30,6 +30,16 @@ export interface EntrySummary {
 }
 export type EntryType = { 'expense' : null } |
   { 'saving' : null };
+export interface SavingsGoal {
+  'id' : bigint,
+  'name' : string,
+  'note' : [] | [string],
+  'createdAt' : Time,
+  'deadline' : [] | [Time],
+  'lastModified' : Time,
+  'targetAmount' : number,
+  'currentAmount' : number,
+}
 export type Time = bigint;
 export interface UserProfile { 'name' : string }
 export type UserRole = { 'admin' : null } |
@@ -41,14 +51,21 @@ export interface _SERVICE {
     [[] | [bigint], Time, EntryType, number, [] | [string], [] | [string]],
     bigint
   >,
+  'addOrUpdateSavingsGoal' : ActorMethod<
+    [[] | [bigint], string, number, number, [] | [Time], [] | [string]],
+    bigint
+  >,
   'assignCallerUserRole' : ActorMethod<[Principal, UserRole], undefined>,
   'deleteEntry' : ActorMethod<[bigint], undefined>,
+  'deleteSavingsGoal' : ActorMethod<[bigint], undefined>,
   'getCallerUserProfile' : ActorMethod<[], [] | [UserProfile]>,
   'getCallerUserRole' : ActorMethod<[], UserRole>,
   'getDashboard' : ActorMethod<[], Dashboard>,
   'getEntries' : ActorMethod<[], Array<Entry>>,
+  'getSavingsGoals' : ActorMethod<[], Array<SavingsGoal>>,
   'getUserProfile' : ActorMethod<[Principal], [] | [UserProfile]>,
   'isCallerAdmin' : ActorMethod<[], boolean>,
+  'registerUser' : ActorMethod<[string], undefined>,
   'saveCallerUserProfile' : ActorMethod<[UserProfile], undefined>,
 }
 export declare const idlService: IDL.ServiceClass;

@@ -1,12 +1,11 @@
 # Specification
 
 ## Summary
-**Goal:** Make Category selection type-specific and mandatory for entries, and improve UI text contrast/readability over the existing background by removing explicit black text styling.
+**Goal:** Fix the Add Entry flow so signed-in users can create entries successfully, see them appear immediately, and receive clear English error messages when something goes wrong.
 
 **Planned changes:**
-- Replace the shared Category list with two exported, alphabetically sorted constants lists: one for **Expense** (AK Expenses, EB Bill, Internet Bill, Mobile Bill, Online Shopping, Snacks) and one for **Saving** (FD, PPF, RD, SIP, Saving Box).
-- Update **Add New Entry** so Category is required and the dropdown shown depends on selected Type (Expense vs Saving); switching Type clears an invalid prior Category and blocks submit until valid.
-- Update **Edit Entry** dialog similarly: Category required, type-specific dropdown, switching Type clears invalid prior Category, and saving is blocked until valid.
-- Remove explicit black text styling across the UI and ensure text uses theme-driven tokens (foreground/muted-foreground/etc.); adjust overlay/theme variables if needed so text is readable over the current background on Dashboard, Entries, Download APK, and sign-in.
+- Fix backend authorization/role initialization so newly authenticated users reliably receive required “user” permissions for core actions (profiles, entries, dashboard, savings goals) without needing an admin secret.
+- Repair the Add New Entry end-to-end flow so saving creates the entry and refreshes the Entries list (and dependent dashboard data) immediately without manual refresh, supporting multiple entries in sequence.
+- Improve frontend error handling for entry creation to surface clear English messages for authentication/actor availability issues and backend authorization/trap errors, while keeping the existing success behavior and form reset.
 
-**User-visible outcome:** Users must choose a Category when adding/editing an entry, with category options changing based on whether the entry is an Expense or a Saving, and the app’s text is consistently readable over the existing background image across main screens and dialogs.
+**User-visible outcome:** After signing in with Internet Identity, users can add new entries without authorization failures, see the new entry appear right away (with updated related data), and get actionable English error messages if saving fails.

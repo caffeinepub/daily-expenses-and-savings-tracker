@@ -4,6 +4,8 @@ import { useGetEntries } from '../hooks/queries/useEntries';
 import { EntryType } from '../backend';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import PeriodSelector from '../components/dashboard/PeriodSelector';
+import AnalyticsSection from '../components/analytics/AnalyticsSection';
+import StatementExportCard from '../components/statements/StatementExportCard';
 import { TrendingDown, TrendingUp, Wallet } from 'lucide-react';
 import { startOfMonth, endOfMonth } from 'date-fns';
 import { formatINR } from '../utils/currency';
@@ -69,7 +71,7 @@ export default function DashboardPage() {
   return (
     <div className="space-y-4 sm:space-y-6">
       <div>
-        <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">Dashboard</h2>
+        <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">Dashboard</h2>
         <p className="text-sm sm:text-base text-muted-foreground mt-1">Overview of your financial activity</p>
       </div>
 
@@ -156,6 +158,10 @@ export default function DashboardPage() {
               </CardContent>
             </Card>
           )}
+          
+          <AnalyticsSection entries={entries} />
+          
+          <StatementExportCard entries={entries} />
         </>
       )}
     </div>

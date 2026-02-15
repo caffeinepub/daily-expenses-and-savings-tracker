@@ -1,89 +1,68 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-15T12:57:49.137Z",
+  "generatedAt": "2026-02-15T13:52:28.263Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 4,
-    "implemented": 4,
+    "total": 3,
+    "implemented": 2,
     "items": [
       {
-        "id": "REQ-24",
-        "summary": "Replace the single shared Category options list with two separate, alphabetically-sorted dropdown category lists: one for Expense entries and one for Saving entries.\n\nExpense categories (A–Z): AK Expenses, EB Bill, Internet Bill, Mobile Bill, Online Shopping, Snacks.\nSaving categories (A–Z): FD, PPF, RD, SIP, Saving Box.\n\nExpose these lists via the existing category constants module so all category dropdowns read from the same source of truth.",
+        "id": "REQ-41",
+        "summary": "Fix the Add Entry flow end-to-end so a signed-in user can successfully create a new entry and see it appear in the Entries list immediately after saving.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/constants/categories.ts"
+          "frontend/src/hooks/useActor.ts",
+          "frontend/src/hooks/queries/useEntries.ts",
+          "frontend/src/components/entries/EntryForm.tsx",
+          "frontend/src/pages/EntriesPage.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/constants/categories.ts"
+          "frontend/src/hooks/queries/useEntries.ts",
+          "frontend/src/components/entries/EntryForm.tsx",
+          "frontend/src/pages/EntriesPage.tsx"
         ]
       },
       {
-        "id": "REQ-25",
-        "summary": "Update the Add New Entry form so Category is mandatory and uses two separate dropdowns based on the selected Type:\n- When Type is Expense, show only the Expense category dropdown.\n- When Type is Saving, show only the Saving category dropdown.\n\nEnsure changing the Type resets/clears any previously selected Category if it is not valid for the newly selected Type.\n\nUpdate all user-facing labels and validation messages in English (e.g., show “Category *” and prevent submission when no category is selected).",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/components/entries/EntryForm.tsx",
-          "frontend/src/constants/categories.ts"
-        ],
-        "matchedFiles": [
-          "frontend/src/components/entries/EntryForm.tsx",
-          "frontend/src/constants/categories.ts"
-        ]
+        "id": "REQ-42",
+        "summary": "Update backend access control initialization so authenticated users are reliably granted the required 'user' permissions to use core app functionality (profiles, entries, dashboard, savings goals) without needing an admin secret token.",
+        "status": "unknown",
+        "plannedFiles": [],
+        "matchedFiles": []
       },
       {
-        "id": "REQ-26",
-        "summary": "Update the Edit Entry dialog so Category is mandatory and uses two separate dropdowns based on the selected Type:\n- When Type is Expense, show only the Expense category dropdown.\n- When Type is Saving, show only the Saving category dropdown.\n\nEnsure changing the Type resets/clears any previously selected Category if it is not valid for the newly selected Type, and block saving until a valid category is selected.",
+        "id": "REQ-43",
+        "summary": "Improve frontend error handling for entry creation so failures show a clear English error message that helps the user recover (e.g., show authorization/identity/validation errors instead of only a generic failure toast).",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/entries/EditEntryDialog.tsx",
-          "frontend/src/constants/categories.ts"
+          "frontend/src/utils/icErrors.ts",
+          "frontend/src/components/entries/EntryForm.tsx",
+          "frontend/src/hooks/useActor.ts"
         ],
         "matchedFiles": [
-          "frontend/src/components/entries/EditEntryDialog.tsx",
-          "frontend/src/constants/categories.ts"
-        ]
-      },
-      {
-        "id": "REQ-27",
-        "summary": "Remove black-colored text from the UI by eliminating explicit black text styling (e.g., `text-black`, inline `#000`, or equivalent) and ensure text colors consistently use theme-driven foreground/muted-foreground tokens so they contrast clearly against the existing saving-money background image and overlay.\n\nIf needed, adjust theme variables and/or overlay opacity so default text is readable across pages (Dashboard, Entries, Download APK, and sign-in screen).",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/index.css",
-          "frontend/src/components/layout/AppLayout.tsx",
-          "frontend/src/components/auth/AuthGate.tsx",
-          "frontend/src/pages/DashboardPage.tsx",
-          "frontend/src/pages/EntriesPage.tsx",
-          "frontend/src/pages/DownloadApkPage.tsx",
-          "frontend/src/components/entries/EntryForm.tsx",
-          "frontend/src/components/entries/EditEntryDialog.tsx",
-          "frontend/src/components/entries/EntriesTable.tsx",
-          "frontend/src/components/layout/AppHeader.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/index.css",
-          "frontend/src/components/layout/AppLayout.tsx",
-          "frontend/src/components/auth/AuthGate.tsx",
-          "frontend/src/components/entries/EntryForm.tsx",
-          "frontend/src/components/entries/EditEntryDialog.tsx"
+          "frontend/src/utils/icErrors.ts",
+          "frontend/src/components/entries/EntryForm.tsx"
         ]
       }
     ]
   },
   "changedFiles": [
+    "backend/main.mo",
     "build-request.json",
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/src/components/auth/AuthGate.tsx",
-    "frontend/src/components/entries/EditEntryDialog.tsx",
+    "frontend/src/backend.d.ts",
+    "frontend/src/backend.ts",
     "frontend/src/components/entries/EntryForm.tsx",
-    "frontend/src/components/layout/AppLayout.tsx",
-    "frontend/src/constants/categories.ts",
-    "frontend/src/index.css",
+    "frontend/src/declarations/backend.did.d.ts",
+    "frontend/src/declarations/backend.did.js",
+    "frontend/src/hooks/queries/useEntries.ts",
+    "frontend/src/pages/EntriesPage.tsx",
+    "frontend/src/utils/icErrors.ts",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

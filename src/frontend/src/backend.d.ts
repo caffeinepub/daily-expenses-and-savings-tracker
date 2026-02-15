@@ -32,6 +32,16 @@ export interface Dashboard {
 export interface UserProfile {
     name: string;
 }
+export interface SavingsGoal {
+    id: bigint;
+    name: string;
+    note?: string;
+    createdAt: Time;
+    deadline?: Time;
+    lastModified: Time;
+    targetAmount: number;
+    currentAmount: number;
+}
 export enum EntryType {
     expense = "expense",
     saving = "saving"
@@ -43,13 +53,17 @@ export enum UserRole {
 }
 export interface backendInterface {
     addOrUpdateEntry(id: bigint | null, date: Time, entryType: EntryType, amount: number, category: string | null, note: string | null): Promise<bigint>;
+    addOrUpdateSavingsGoal(id: bigint | null, name: string, targetAmount: number, currentAmount: number, deadline: Time | null, note: string | null): Promise<bigint>;
     assignCallerUserRole(user: Principal, role: UserRole): Promise<void>;
     deleteEntry(id: bigint): Promise<void>;
+    deleteSavingsGoal(id: bigint): Promise<void>;
     getCallerUserProfile(): Promise<UserProfile | null>;
     getCallerUserRole(): Promise<UserRole>;
     getDashboard(): Promise<Dashboard>;
     getEntries(): Promise<Array<Entry>>;
+    getSavingsGoals(): Promise<Array<SavingsGoal>>;
     getUserProfile(user: Principal): Promise<UserProfile | null>;
     isCallerAdmin(): Promise<boolean>;
+    registerUser(name: string): Promise<void>;
     saveCallerUserProfile(profile: UserProfile): Promise<void>;
 }

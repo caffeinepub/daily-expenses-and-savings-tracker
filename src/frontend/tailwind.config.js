@@ -16,7 +16,8 @@ export default {
         },
         extend: {
             fontFamily: {
-                sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                sans: ['Poppins', 'system-ui', '-apple-system', 'sans-serif'],
+                body: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
             },
             colors: {
                 border: 'oklch(var(--border))',
@@ -77,7 +78,7 @@ export default {
             },
             boxShadow: {
                 xs: '0 1px 2px 0 rgba(0,0,0,0.05)',
-                'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)',
+                'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.08), 0 10px 20px -2px rgba(0, 0, 0, 0.05)',
             },
             keyframes: {
                 'accordion-down': {

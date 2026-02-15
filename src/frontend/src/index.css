@@ -4,76 +4,76 @@
 
 @layer base {
     :root {
-        --radius: 0.75rem;
-        /* Vibrant light theme with teal/cyan primary and warm accents */
+        --radius: 0.5rem;
+        /* Modern teal and coral theme with vibrant accents */
         --background: 0.98 0.01 200;
-        --foreground: 0.25 0.03 240;
+        --foreground: 0.15 0.03 220;
         --card: 1.0 0.0 0;
-        --card-foreground: 0.25 0.03 240;
+        --card-foreground: 0.15 0.03 220;
         --popover: 1.0 0.0 0;
-        --popover-foreground: 0.25 0.03 240;
-        --primary: 0.60 0.18 200;
+        --popover-foreground: 0.15 0.03 220;
+        --primary: 0.55 0.18 200;
         --primary-foreground: 0.98 0.01 200;
-        --secondary: 0.92 0.02 280;
-        --secondary-foreground: 0.35 0.04 240;
-        --muted: 0.94 0.01 240;
-        --muted-foreground: 0.55 0.03 240;
-        --accent: 0.70 0.16 50;
-        --accent-foreground: 0.98 0.01 50;
-        --destructive: 0.60 0.20 25;
+        --secondary: 0.92 0.02 200;
+        --secondary-foreground: 0.25 0.03 220;
+        --muted: 0.94 0.01 200;
+        --muted-foreground: 0.48 0.02 220;
+        --accent: 0.68 0.20 30;
+        --accent-foreground: 0.98 0.01 30;
+        --destructive: 0.58 0.22 25;
         --destructive-foreground: 0.98 0.01 25;
-        --border: 0.88 0.02 240;
-        --input: 0.88 0.02 240;
-        --ring: 0.60 0.18 200;
-        --chart-1: 0.60 0.18 200;
-        --chart-2: 0.65 0.16 280;
-        --chart-3: 0.70 0.16 50;
-        --chart-4: 0.55 0.20 320;
-        --chart-5: 0.68 0.14 160;
+        --border: 0.88 0.02 200;
+        --input: 0.88 0.02 200;
+        --ring: 0.55 0.18 200;
+        --chart-1: 0.55 0.18 200;
+        --chart-2: 0.60 0.16 240;
+        --chart-3: 0.68 0.20 30;
+        --chart-4: 0.62 0.18 280;
+        --chart-5: 0.65 0.16 160;
         --sidebar: 0.96 0.01 200;
-        --sidebar-foreground: 0.25 0.03 240;
-        --sidebar-primary: 0.60 0.18 200;
+        --sidebar-foreground: 0.15 0.03 220;
+        --sidebar-primary: 0.55 0.18 200;
         --sidebar-primary-foreground: 0.98 0.01 200;
-        --sidebar-accent: 0.92 0.02 280;
-        --sidebar-accent-foreground: 0.35 0.04 240;
-        --sidebar-border: 0.88 0.02 240;
-        --sidebar-ring: 0.60 0.18 200;
+        --sidebar-accent: 0.92 0.02 200;
+        --sidebar-accent-foreground: 0.25 0.03 220;
+        --sidebar-border: 0.88 0.02 200;
+        --sidebar-ring: 0.55 0.18 200;
     }
 
     .dark {
-        /* Vibrant dark theme with teal/cyan primary and warm accents */
-        --background: 0.18 0.02 240;
+        /* Modern dark theme with teal and coral accents */
+        --background: 0.12 0.02 220;
         --foreground: 0.96 0.01 200;
-        --card: 0.22 0.02 240;
+        --card: 0.18 0.02 220;
         --card-foreground: 0.96 0.01 200;
-        --popover: 0.20 0.02 240;
+        --popover: 0.16 0.02 220;
         --popover-foreground: 0.96 0.01 200;
-        --primary: 0.65 0.18 200;
+        --primary: 0.60 0.20 200;
         --primary-foreground: 0.98 0.01 200;
-        --secondary: 0.28 0.02 240;
+        --secondary: 0.22 0.02 220;
         --secondary-foreground: 0.92 0.01 200;
-        --muted: 0.30 0.02 240;
-        --muted-foreground: 0.65 0.02 200;
-        --accent: 0.70 0.16 50;
-        --accent-foreground: 0.98 0.01 50;
-        --destructive: 0.60 0.20 25;
+        --muted: 0.25 0.02 220;
+        --muted-foreground: 0.62 0.02 200;
+        --accent: 0.70 0.22 30;
+        --accent-foreground: 0.98 0.01 30;
+        --destructive: 0.58 0.22 25;
         --destructive-foreground: 0.98 0.01 25;
-        --border: 0.35 0.02 240;
-        --input: 0.35 0.02 240;
-        --ring: 0.65 0.18 200;
-        --chart-1: 0.65 0.18 200;
-        --chart-2: 0.68 0.16 280;
-        --chart-3: 0.70 0.16 50;
-        --chart-4: 0.60 0.20 320;
-        --chart-5: 0.72 0.14 160;
-        --sidebar: 0.22 0.02 240;
+        --border: 0.28 0.02 220;
+        --input: 0.28 0.02 220;
+        --ring: 0.60 0.20 200;
+        --chart-1: 0.60 0.20 200;
+        --chart-2: 0.62 0.18 240;
+        --chart-3: 0.70 0.22 30;
+        --chart-4: 0.64 0.20 280;
+        --chart-5: 0.68 0.18 160;
+        --sidebar: 0.18 0.02 220;
         --sidebar-foreground: 0.96 0.01 200;
-        --sidebar-primary: 0.65 0.18 200;
+        --sidebar-primary: 0.60 0.20 200;
         --sidebar-primary-foreground: 0.98 0.01 200;
-        --sidebar-accent: 0.28 0.02 240;
+        --sidebar-accent: 0.22 0.02 220;
         --sidebar-accent-foreground: 0.92 0.01 200;
-        --sidebar-border: 0.35 0.02 240;
-        --sidebar-ring: 0.65 0.18 200;
+        --sidebar-border: 0.28 0.02 220;
+        --sidebar-ring: 0.60 0.20 200;
     }
 
     * {
@@ -95,21 +95,7 @@
         background-attachment: fixed;
     }
 
-    /* Animated background overlay */
-    @keyframes shimmer {
-        0% {
-            transform: translate(-50%, -50%) rotate(0deg);
-            opacity: 0.3;
-        }
-        50% {
-            opacity: 0.5;
-        }
-        100% {
-            transform: translate(-50%, -50%) rotate(360deg);
-            opacity: 0.3;
-        }
-    }
-
+    /* Animated background overlay with modern colors */
     @keyframes blob-float {
         0%, 100% {
             transform: translate(0, 0) scale(1);
@@ -146,39 +132,37 @@
         content: '';
         position: absolute;
         border-radius: 50%;
-        filter: blur(80px);
-        opacity: 0.4;
+        filter: blur(90px);
+        opacity: 0.35;
     }
 
     .animated-overlay::before {
-        width: 600px;
-        height: 600px;
-        background: radial-gradient(circle, oklch(0.65 0.18 200 / 0.4), transparent 70%);
-        top: 20%;
-        left: 10%;
-        animation: blob-float 20s ease-in-out infinite;
+        width: 650px;
+        height: 650px;
+        background: radial-gradient(circle, oklch(0.60 0.20 200 / 0.5), transparent 70%);
+        top: 15%;
+        left: 8%;
+        animation: blob-float 22s ease-in-out infinite;
     }
 
     .animated-overlay::after {
-        width: 500px;
-        height: 500px;
-        background: radial-gradient(circle, oklch(0.70 0.16 50 / 0.3), transparent 70%);
-        bottom: 20%;
-        right: 10%;
-        animation: blob-float-2 25s ease-in-out infinite;
+        width: 550px;
+        height: 550px;
+        background: radial-gradient(circle, oklch(0.70 0.22 30 / 0.4), transparent 70%);
+        bottom: 12%;
+        right: 8%;
+        animation: blob-float-2 28s ease-in-out infinite;
     }
 
-    /* Reduced motion support */
     @media (prefers-reduced-motion: reduce) {
         .animated-overlay::before,
         .animated-overlay::after {
             animation: none;
-            opacity: 0.2;
         }
     }
 
-    /* Page transition animations */
-    @keyframes page-enter {
+    /* Page transitions */
+    @keyframes fadeIn {
         from {
             opacity: 0;
             transform: translateY(10px);
@@ -190,37 +174,34 @@
     }
 
     .page-transition {
-        animation: page-enter 0.3s ease-out;
+        animation: fadeIn 0.3s ease-out;
+    }
+
+    /* Button micro-interactions */
+    .btn-interactive {
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .btn-interactive:hover:not(:disabled) {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px oklch(var(--primary) / 0.25);
+    }
+
+    .btn-interactive:active:not(:disabled) {
+        transform: translateY(0);
+        box-shadow: 0 2px 6px oklch(var(--primary) / 0.2);
+    }
+
+    /* 3D Pie Chart styles */
+    .pie-chart-3d {
+        transition: all 0.3s ease;
     }
 
     @media (prefers-reduced-motion: reduce) {
         .page-transition {
             animation: none;
         }
-    }
-
-    /* Button micro-interactions */
-    .btn-interactive {
-        transition: transform 0.15s ease, box-shadow 0.15s ease;
-    }
-
-    .btn-interactive:hover:not(:disabled) {
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px oklch(0.60 0.18 200 / 0.2);
-    }
-
-    .btn-interactive:active:not(:disabled) {
-        transform: translateY(0);
-        box-shadow: 0 2px 4px oklch(0.60 0.18 200 / 0.15);
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-        .btn-interactive {
-            transition: none;
-        }
-        .btn-interactive:hover:not(:disabled) {
-            transform: none;
-        }
+        .btn-interactive:hover:not(:disabled),
         .btn-interactive:active:not(:disabled) {
             transform: none;
         }

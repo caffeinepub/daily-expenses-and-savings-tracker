@@ -1,123 +1,62 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Type-specific mandatory category dropdowns + improved text contrast over background",
+  "title": "Fix Add Entry flow (frontend wiring + better error reporting)",
   "requirements": [
     {
-      "id": "REQ-24",
-      "summary": "Split categories into distinct alphabetically-sorted Expense and Saving dropdown lists, exported from the shared category constants module.",
+      "id": "REQ-41",
+      "summary": "Make Add Entry succeed for authenticated users and refresh Entries/Dashboard data immediately after save.",
       "acceptanceCriteria": [
-        "The codebase has two distinct exported category lists (Expense and Saving) and they are alphabetically sorted exactly as specified.",
-        "No UI category dropdown uses the old shared list (Food, Movies, Loans EMI, Transport, Home Expenses, Credit Card, Others)."
+        "When signed in with Internet Identity, submitting the Add New Entry form successfully creates an entry without errors.",
+        "After a successful save, the new entry appears in the Entries list (and any dependent dashboard data updates) without requiring a manual refresh.",
+        "The same signed-in user can add multiple entries in sequence."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/constants/categories.ts",
+          "path": "frontend/src/hooks/useActor.ts",
           "operation": "modify",
-          "description": "Replace the single exported list with two exported lists: Expense categories (A–Z): AK Expenses, EB Bill, Internet Bill, Mobile Bill, Online Shopping, Snacks; Saving categories (A–Z): FD, PPF, RD, SIP, Saving Box. Ensure both are exported as the single source of truth for all category dropdowns."
-        }
-      ]
-    },
-    {
-      "id": "REQ-25",
-      "summary": "Make Category mandatory in Add New Entry and swap the dropdown options based on selected Type, clearing invalid selections on Type change.",
-      "acceptanceCriteria": [
-        "In Add New Entry, the Category field is required for both Expense and Saving types and the form cannot be submitted without a selected category.",
-        "The Category dropdown options change immediately when switching Type, and an invalid previous selection is cleared.",
-        "User sees clear English validation feedback when Category is missing."
-      ],
-      "file_operations": [
+          "description": "Decouple actor creation from admin-secret initialization so signed-in users can still create a usable actor even when no admin token is present; keep any admin-token behavior intact but make it best-effort (catch and surface errors non-fatally for non-admin flows). This supports the authorization component’s Internet Identity flow; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/queries/useEntries.ts",
+          "operation": "modify",
+          "description": "Ensure addOrUpdateEntry mutation success reliably triggers immediate refresh of entries and dashboard data (keep/increase robustness of react-query invalidation/refetch behavior) so the new entry appears without manual refresh."
+        },
         {
           "path": "frontend/src/components/entries/EntryForm.tsx",
           "operation": "modify",
-          "description": "Update Add New Entry form to: (1) use type-specific category lists from frontend/src/constants/categories.ts; (2) show only the Expense category dropdown when Type=Expense and only the Saving category dropdown when Type=Saving; (3) make Category required with English label \"Category *\" and English validation feedback that blocks submission when missing; (4) when Type changes, clear/reset Category if it is not valid for the newly selected Type."
-        },
-        {
-          "path": "frontend/src/constants/categories.ts",
-          "operation": "modify",
-          "description": "Ensure exports support Add New Entry requirements (separate lists and optionally a small helper to resolve categories by EntryType) so EntryForm reads from this single source of truth."
-        }
-      ]
-    },
-    {
-      "id": "REQ-26",
-      "summary": "Make Category mandatory in Edit Entry dialog and swap the dropdown options based on selected Type, clearing invalid selections on Type change and blocking save until valid.",
-      "acceptanceCriteria": [
-        "In Edit Entry, the Category field is required and the dialog cannot save changes without a selected category.",
-        "The Category dropdown options change immediately when switching Type, and an invalid previous selection is cleared.",
-        "User-facing text remains in English."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/components/entries/EditEntryDialog.tsx",
-          "operation": "modify",
-          "description": "Update Edit Entry dialog to: (1) use type-specific category lists from frontend/src/constants/categories.ts; (2) show only the Expense category dropdown when Type=Expense and only the Saving category dropdown when Type=Saving; (3) make Category required with English label \"Category *\" and English validation feedback that blocks saving when missing; (4) when Type changes, clear/reset Category if it is not valid for the newly selected Type, and prevent save until a valid category is selected."
-        },
-        {
-          "path": "frontend/src/constants/categories.ts",
-          "operation": "modify",
-          "description": "Ensure exports support Edit Entry requirements (separate lists and optionally a small helper to resolve categories by EntryType) so EditEntryDialog reads from this single source of truth."
-        }
-      ]
-    },
-    {
-      "id": "REQ-27",
-      "summary": "Remove explicit black text styling and ensure theme-token text colors and overlays provide readable contrast over the background across main pages and dialogs.",
-      "acceptanceCriteria": [
-        "No primary UI text relies on explicit black coloring; text color is driven by theme tokens (foreground/muted-foreground/etc.).",
-        "Text remains clearly readable over the current background image across the main pages and dialogs.",
-        "All user-facing text remains in English."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/index.css",
-          "operation": "modify",
-          "description": "Adjust theme variables (foreground/muted-foreground and related tokens if needed) and/or shared styling so default text remains readable over the saving-money background image, while keeping text color driven by theme tokens (no explicit black)."
-        },
-        {
-          "path": "frontend/src/components/layout/AppLayout.tsx",
-          "operation": "modify",
-          "description": "Improve readability over the background by tuning the existing overlay opacity and/or related theme-token classes (e.g., bg-background/XX) to ensure consistent contrast across pages without introducing explicit black text styling."
-        },
-        {
-          "path": "frontend/src/components/auth/AuthGate.tsx",
-          "operation": "modify",
-          "description": "Remove any explicit black text styling if present and tune the sign-in screen overlay/card styling (theme-token classes only) to ensure strong text contrast over the background image."
-        },
-        {
-          "path": "frontend/src/pages/DashboardPage.tsx",
-          "operation": "modify",
-          "description": "Audit and replace any explicit black text styling (e.g., text-black, inline #000) with theme-driven text tokens (foreground/muted-foreground/etc.) and ensure headings/body text remain readable over the background."
+          "description": "On successful add, keep the current English success toast, reset the form as today, and ensure the UI remains ready for adding another entry (no stuck pending state; no dependency on manual refresh)."
         },
         {
           "path": "frontend/src/pages/EntriesPage.tsx",
           "operation": "modify",
-          "description": "Audit and replace any explicit black text styling (e.g., text-black, inline #000) with theme-driven text tokens and ensure page intro text remains readable over the background."
-        },
+          "description": "Wire the Add Entry UI state so that after saving an entry, the Entries list reflects the latest data in the same session (confirm the EntryForm is mounted/visible as intended when adding multiple entries and does not block list refresh)."
+        }
+      ]
+    },
+    {
+      "id": "REQ-43",
+      "summary": "Improve entry-creation error handling to show actionable English messages for auth/identity/authorization/validation failures.",
+      "acceptanceCriteria": [
+        "If entry creation fails due to missing authentication/actor availability, show an English toast that indicates the user should sign in again or retry after the app finishes loading (no silent failure).",
+        "If the backend returns an authorization error (trap/message), the toast surfaces a readable version of that message (or a mapped friendly message) instead of only \"Failed to add entry. Please try again.\"",
+        "On success, the existing success toast remains in English and the form resets as it does today."
+      ],
+      "file_operations": [
         {
-          "path": "frontend/src/pages/DownloadApkPage.tsx",
-          "operation": "modify",
-          "description": "Audit and replace any explicit black text styling (e.g., text-black, inline #000) with theme-driven text tokens and ensure instructions remain readable over the background."
+          "path": "frontend/src/utils/icErrors.ts",
+          "operation": "create",
+          "description": "Add a small shared error-normalization helper for converting thrown errors (including authorization traps and actor/identity readiness issues) into clear English messages suitable for toasts; incorporate guidance from the authorization component’s error-handling notes. Verify the component's usage instructions before implementing."
         },
         {
           "path": "frontend/src/components/entries/EntryForm.tsx",
           "operation": "modify",
-          "description": "Audit and remove any explicit black text styling in the Add New Entry form, ensuring labels/help text use theme tokens and remain readable over the background."
+          "description": "Replace the generic failure toast in the create-entry catch block with normalized, user-recoverable English messages (actor not available/loading vs unauthorized vs other errors) while keeping the existing English success toast unchanged."
         },
         {
-          "path": "frontend/src/components/entries/EditEntryDialog.tsx",
+          "path": "frontend/src/hooks/useActor.ts",
           "operation": "modify",
-          "description": "Audit and remove any explicit black text styling in the Edit Entry dialog, ensuring labels/help text use theme tokens and remain readable over the background."
-        },
-        {
-          "path": "frontend/src/components/entries/EntriesTable.tsx",
-          "operation": "modify",
-          "description": "Audit and remove any explicit black text styling in the Entries list/table/filter UI, ensuring all text uses theme tokens and remains readable over the background."
-        },
-        {
-          "path": "frontend/src/components/layout/AppHeader.tsx",
-          "operation": "modify",
-          "description": "Audit and remove any explicit black text styling in the header/nav, ensuring all text uses theme tokens and remains readable over the background/blurred header."
+          "description": "Expose enough actor/initialization error context (without breaking existing behavior) so entry creation can distinguish between 'still loading actor' vs 'auth/authorization failure' and show appropriate English toasts per the authorization component guidance. Verify the component's usage instructions before implementing."
         }
       ]
     }

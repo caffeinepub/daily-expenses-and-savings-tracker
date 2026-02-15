@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 19,
-  "summary": "Build an app to track expenses and savings with daily user input.",
+  "projectStateVersion": 29,
+  "summary": "Build an app to track expenses and savings with daily user input, updated categories, a royal/adorable visual design with logo, analytics via a super 3D pie chart (no bar chart), statement exports (PDF/CSV), and a dedicated Savings Goals tab.",
   "architectural_notes": [
     "Add configurable currency formatting (default INR/₹) used consistently across all amount fields and summaries.",
     "Design UI as mobile-first responsive (touch-friendly controls, readable typography, layouts that adapt to small screens).",
@@ -9,12 +9,17 @@
     "Add a background image themed around “saving money” and ensure readability/contrast of UI elements over it (e.g., overlay/scrim as needed).",
     "Category must be mandatory; show two separate category dropdowns based on selected type (Expense vs Saving) with alphabetically sorted options.",
     "Expense categories: AK Expenses, EB Bill, Internet Bill, Mobile Bill, Online Shopping, Snacks (sorted A–Z). Saving categories: FD, PPF, RD, SIP, Saving Box (sorted A–Z).",
-    "Avoid black text; ensure text colors automatically maintain good contrast over the saving-money background image (use overlay/scrim and theme tokens as needed)."
+    "Avoid black text; ensure text colors automatically maintain good contrast over the saving-money background image (use overlay/scrim and theme tokens as needed).",
+    "Update Expense categories to include: Food, Snacks, Movies, Loans EMI, Transport, Credit Card, AK Expenses, Internet Bill, Mobile Bill, Online Shopping, Others (alphabetically sorted) and use this list for Expense-type dropdowns.",
+    "Visual theme direction change: apply a “royal”, adorable design across the app (colors, typography, components) and include a matching app logo.",
+    "Add reporting/analytics views with month/year selection for expenses and savings, including pie and bar chart visualizations."
   ],
   "known_issues": [
     "App currently shows amounts in USD ($); user requests INR (₹) instead.",
     "Android APK install fails with 'problem parsing the package' / 'not supported' (likely APK download is corrupted/incomplete or a non-APK/HTML file is being downloaded).",
-    "Hosted draft app build can expire, breaking access to the APK download page/link."
+    "Hosted draft app build can expire, breaking access to the APK download page/link.",
+    "Text color/word colors in the current UI (as shown in the referenced screenshot) need adjustment for readability/desired styling.",
+    "User reports they are unable to add new entries (Add Entry flow not working)."
   ],
   "isFixRequest": true,
   "existing_features": [
@@ -217,6 +222,126 @@
         "REQ-27"
       ],
       "version": 1
+    },
+    {
+      "id": "feature-update-the-ui-text-icon-colors-for-the-words-shown-in-the-provided-screenshot-specifically-the-top-header-title-expense-saver-the-main-navigation-button-labels-icons-dashboard-entries-download-apk-and-the-auth-button-label-login-logout-so-they-no-longer-appear-as-harsh-flat-black-and-instead-use-theme-driven-colors-with-strong-contrast-over-the-background-image-overlay",
+      "title": "Update the UI text/icon colors for the words shown in the provided screenshot—specifically the top header title (\"Expense Saver\"), the main navigation button labels/icons (\"Dashboard\", \"Entries\", \"Download APK\"), and the auth button label (\"Login\"/\"Logout\")—so they no longer appear as harsh/flat black and instead use theme-driven colors with strong contrast over the background image/overlay.",
+      "reqIds": [
+        "REQ-28"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-adjust-the-dashboard-page-heading-and-subheading-text-colors-dashboard-and-overview-of-your-financial-activity-to-align-with-the-updated-theme-driven-text-colors-and-ensure-clear-readability-over-the-background-overlay",
+      "title": "Adjust the Dashboard page heading and subheading text colors (\"Dashboard\" and \"Overview of your financial activity\") to align with the updated theme-driven text colors and ensure clear readability over the background/overlay.",
+      "reqIds": [
+        "REQ-29"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-expense-category-dropdown-source-of-truth-list-so-the-expense-categories-are-exactly-food-snacks-movies-loans-emi-transport-credit-card-ak-expenses-internet-bill-mobile-bill-online-shopping-others-and-ensure-this-updated-list-is-used-everywhere-an-expense-category-is-selected-add-new-entry-form-and-edit-entry-dialog",
+      "title": "Update the Expense category dropdown source-of-truth list so the Expense categories are exactly: Food, Snacks, Movies, Loans EMI, Transport, Credit Card, AK Expenses, Internet Bill, Mobile Bill, Online Shopping, Others; and ensure this updated list is used everywhere an Expense category is selected (Add New Entry form and Edit Entry dialog).",
+      "reqIds": [
+        "REQ-30"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-revamp-the-app-s-visual-design-to-a-royal-and-adorable-look-by-updating-the-global-theme-tokens-colors-surfaces-borders-typography-feel-and-applying-the-updated-styling-consistently-across-the-dashboard-entries-download-apk-header-navigation-and-sign-in-screen-while-keeping-all-user-facing-text-in-english",
+      "title": "Revamp the app’s visual design to a “royal” and adorable look by updating the global theme tokens (colors, surfaces, borders, typography feel) and applying the updated styling consistently across the Dashboard, Entries, Download APK, header/navigation, and sign-in screen, while keeping all user-facing text in English.",
+      "reqIds": [
+        "REQ-31"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-new-royal-adorable-app-logo-asset-and-update-the-app-to-use-it-anywhere-the-current-logo-is-shown-at-minimum-in-the-header-and-sign-in-screen",
+      "title": "Create a new royal/adorable app logo asset and update the app to use it anywhere the current logo is shown (at minimum in the header and sign-in screen).",
+      "reqIds": [
+        "REQ-32"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-app-s-visual-theme-colors-surfaces-typography-feel-shadows-and-apply-it-consistently-across-the-entire-ui-dashboard-entries-download-apk-header-navigation-auth-screens-keeping-all-user-facing-text-in-english",
+      "title": "Update the app’s visual theme (colors, surfaces, typography feel, shadows) and apply it consistently across the entire UI (Dashboard, Entries, Download APK, header/navigation, auth screens), keeping all user-facing text in English.",
+      "reqIds": [
+        "REQ-33"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-analytics-charts-pie-chart-and-bar-chart-that-support-month-and-year-views-for-expenses-and-savings-based-on-the-signed-in-user-s-entries",
+      "title": "Add analytics charts (pie chart and bar chart) that support month and year views for Expenses and Savings, based on the signed-in user’s entries.",
+      "reqIds": [
+        "REQ-34"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-monthly-yearly-statement-export-feature-that-lets-the-user-download-their-expenses-and-savings-statement-for-a-selected-month-or-year-in-pdf-and-xls-formats",
+      "title": "Add a monthly/yearly statement export feature that lets the user download their Expenses and Savings statement for a selected month or year in PDF and XLS formats.",
+      "reqIds": [
+        "REQ-35"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-new-top-level-savings-goals-tab-positioned-to-the-right-of-entries-in-the-main-navigation-and-implement-a-savings-goals-page-for-creating-viewing-updating-and-deleting-savings-goals-per-signed-in-user",
+      "title": "Add a new top-level “Savings Goals” tab positioned to the right of “Entries” in the main navigation, and implement a Savings Goals page for creating, viewing, updating, and deleting savings goals per signed-in user.",
+      "reqIds": [
+        "REQ-36"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-remove-the-analytics-bar-chart-from-the-app-so-only-the-pie-chart-based-analytics-remain-visible-no-bar-chart-ui-no-bar-chart-component-rendered",
+      "title": "Remove the Analytics bar chart from the app so only the pie-chart-based analytics remain visible (no bar chart UI, no bar chart component rendered).",
+      "reqIds": [
+        "REQ-37"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-replace-the-current-2d-recharts-pie-chart-with-a-super-3d-pie-chart-visualization-for-category-breakdowns-while-keeping-the-existing-month-year-period-selector-and-the-expenses-savings-toggle",
+      "title": "Replace the current 2D Recharts pie chart with a “super 3D” pie chart visualization for category breakdowns, while keeping the existing month/year period selector and the Expenses/Savings toggle.",
+      "reqIds": [
+        "REQ-38"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-statement-export-so-users-can-download-statements-as-pdf-and-csv-not-txt-with-clear-english-button-labels-and-correct-file-extensions",
+      "title": "Update statement export so users can download statements as PDF and CSV (not TXT), with clear English button labels and correct file extensions.",
+      "reqIds": [
+        "REQ-39"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-actual-pdf-generation-for-the-statement-export-so-the-generated-file-is-a-valid-pdf-not-a-text-file-saved-with-a-misleading-label-extension-and-keep-all-statement-content-in-english-with-inr-formatting",
+      "title": "Implement actual PDF generation for the statement export so the generated file is a valid PDF (not a text file saved with a misleading label/extension), and keep all statement content in English with INR formatting.",
+      "reqIds": [
+        "REQ-40"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-fix-the-add-entry-flow-end-to-end-so-a-signed-in-user-can-successfully-create-a-new-entry-and-see-it-appear-in-the-entries-list-immediately-after-saving",
+      "title": "Fix the Add Entry flow end-to-end so a signed-in user can successfully create a new entry and see it appear in the Entries list immediately after saving.",
+      "reqIds": [
+        "REQ-41"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-improve-frontend-error-handling-for-entry-creation-so-failures-show-a-clear-english-error-message-that-helps-the-user-recover-e-g-show-authorization-identity-validation-errors-instead-of-only-a-generic-failure-toast",
+      "title": "Improve frontend error handling for entry creation so failures show a clear English error message that helps the user recover (e.g., show authorization/identity/validation errors instead of only a generic failure toast).",
+      "reqIds": [
+        "REQ-43"
+      ],
+      "version": 1
     }
   ],
   "new_feature_requests": [
@@ -300,6 +425,44 @@
       "id": "AR-17",
       "summary": "Update UI text colors to avoid black text and ensure strong contrast/readability over the saving-money background image across the app.",
       "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-18",
+      "summary": "Update the Expense category list to include: Food, Snacks, Movies, Loans EMI, Transport, Credit Card, AK Expenses, Internet Bill, Mobile Bill, Online Shopping, Others (and ensure the expense-type dropdown uses this list).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-19",
+      "summary": "Revamp the app’s UI to a “royal”, adorable look (colors, overall design) and add/update an app logo to match the new style.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-22",
+      "summary": "Add a separate “Savings Goals” tab positioned to the right of “Entries”.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-23",
+      "summary": "Update analytics to remove the bar chart and provide a super 3D pie chart for Expenses and Savings with month/year views.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-24",
+      "summary": "Update statement export to support PDF and CSV downloads for selected month/year expense & savings statements (replace XLS with CSV).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-26",
+      "summary": "Update backend access control initialization so authenticated users are reliably granted the required 'user' permissions to use core app functionality (profiles, entries, dashboard, savings goals) without needing an admin secret token.",
+      "reqIds": [
+        "REQ-42"
+      ],
       "status": "pending"
     }
   ],

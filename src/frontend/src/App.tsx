@@ -7,10 +7,11 @@ import ProfileSetupDialog from './components/profile/ProfileSetupDialog';
 import AppLayout from './components/layout/AppLayout';
 import DashboardPage from './pages/DashboardPage';
 import EntriesPage from './pages/EntriesPage';
+import SavingsGoalsPage from './pages/SavingsGoalsPage';
 import DownloadApkPage from './pages/DownloadApkPage';
 import { useState } from 'react';
 
-type Page = 'dashboard' | 'entries' | 'download';
+type Page = 'dashboard' | 'entries' | 'savings-goals' | 'download';
 
 export default function App() {
   const { identity } = useInternetIdentity();
@@ -28,6 +29,7 @@ export default function App() {
           <div key={currentPage} className="page-transition">
             {currentPage === 'dashboard' && <DashboardPage />}
             {currentPage === 'entries' && <EntriesPage />}
+            {currentPage === 'savings-goals' && <SavingsGoalsPage />}
             {currentPage === 'download' && <DownloadApkPage />}
           </div>
         </AppLayout>

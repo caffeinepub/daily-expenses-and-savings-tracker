@@ -1,11 +1,16 @@
 // Expense categories (alphabetically sorted)
 export const EXPENSE_CATEGORIES = [
   'AK Expenses',
-  'EB Bill',
+  'Credit Card',
+  'Food',
   'Internet Bill',
+  'Loans EMI',
   'Mobile Bill',
+  'Movies',
   'Online Shopping',
+  'Others',
   'Snacks',
+  'Transport',
 ] as const;
 
 // Saving categories (alphabetically sorted)

@@ -40,6 +40,16 @@ export const Entry = IDL.Record({
   'category' : IDL.Opt(IDL.Text),
   'amount' : IDL.Float64,
 });
+export const SavingsGoal = IDL.Record({
+  'id' : IDL.Nat,
+  'name' : IDL.Text,
+  'note' : IDL.Opt(IDL.Text),
+  'createdAt' : Time,
+  'deadline' : IDL.Opt(Time),
+  'lastModified' : Time,
+  'targetAmount' : IDL.Float64,
+  'currentAmount' : IDL.Float64,
+});
 
 export const idlService = IDL.Service({
   '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
@@ -55,18 +65,33 @@ export const idlService = IDL.Service({
       [IDL.Nat],
       [],
     ),
+  'addOrUpdateSavingsGoal' : IDL.Func(
+      [
+        IDL.Opt(IDL.Nat),
+        IDL.Text,
+        IDL.Float64,
+        IDL.Float64,
+        IDL.Opt(Time),
+        IDL.Opt(IDL.Text),
+      ],
+      [IDL.Nat],
+      [],
+    ),
   'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
   'deleteEntry' : IDL.Func([IDL.Nat], [], []),
+  'deleteSavingsGoal' : IDL.Func([IDL.Nat], [], []),
   'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
   'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
   'getDashboard' : IDL.Func([], [Dashboard], ['query']),
   'getEntries' : IDL.Func([], [IDL.Vec(Entry)], ['query']),
+  'getSavingsGoals' : IDL.Func([], [IDL.Vec(SavingsGoal)], ['query']),
   'getUserProfile' : IDL.Func(
       [IDL.Principal],
       [IDL.Opt(UserProfile)],
       ['query'],
     ),
   'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
+  'registerUser' : IDL.Func([IDL.Text], [], []),
   'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
 });
 
@@ -102,6 +127,16 @@ export const idlFactory = ({ IDL }) => {
     'category' : IDL.Opt(IDL.Text),
     'amount' : IDL.Float64,
   });
+  const SavingsGoal = IDL.Record({
+    'id' : IDL.Nat,
+    'name' : IDL.Text,
+    'note' : IDL.Opt(IDL.Text),
+    'createdAt' : Time,
+    'deadline' : IDL.Opt(Time),
+    'lastModified' : Time,
+    'targetAmount' : IDL.Float64,
+    'currentAmount' : IDL.Float64,
+  });
   
   return IDL.Service({
     '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
@@ -117,18 +152,33 @@ export const idlFactory = ({ IDL }) => {
         [IDL.Nat],
         [],
       ),
+    'addOrUpdateSavingsGoal' : IDL.Func(
+        [
+          IDL.Opt(IDL.Nat),
+          IDL.Text,
+          IDL.Float64,
+          IDL.Float64,
+          IDL.Opt(Time),
+          IDL.Opt(IDL.Text),
+        ],
+        [IDL.Nat],
+        [],
+      ),
     'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
     'deleteEntry' : IDL.Func([IDL.Nat], [], []),
+    'deleteSavingsGoal' : IDL.Func([IDL.Nat], [], []),
     'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
     'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
     'getDashboard' : IDL.Func([], [Dashboard], ['query']),
     'getEntries' : IDL.Func([], [IDL.Vec(Entry)], ['query']),
+    'getSavingsGoals' : IDL.Func([], [IDL.Vec(SavingsGoal)], ['query']),
     'getUserProfile' : IDL.Func(
         [IDL.Principal],
         [IDL.Opt(UserProfile)],
         ['query'],
       ),
     'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
+    'registerUser' : IDL.Func([IDL.Text], [], []),
     'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
   });
 };

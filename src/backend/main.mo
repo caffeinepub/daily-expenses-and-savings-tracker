@@ -54,14 +54,44 @@ actor {
     name : Text;
   };
 
+  type SavingsGoal = {
+    id : Nat;
+    name : Text;
+    targetAmount : Float;
+    currentAmount : Float;
+    deadline : ?Time.Time;
+    note : ?Text;
+    createdAt : Time.Time;
+    lastModified : Time.Time;
+  };
+
+  module SavingsGoal {
+    public func compare(a : SavingsGoal, b : SavingsGoal) : Order.Order {
+      Nat.compare(a.id, b.id);
+    };
+
+    public func compareByDeadline(a : SavingsGoal, b : SavingsGoal) : Order.Order {
+      switch (a.deadline, b.deadline) {
+        case (?aDeadline, ?bDeadline) { Int.compare(aDeadline, bDeadline) };
+        case (?_, null) { #less };
+        case (null, ?_) { #greater };
+        case (null, null) { Nat.compare(a.id, b.id) };
+      };
+    };
+  };
+
   let entryData = Map.empty<Principal, List.List<Entry>>();
   let userProfiles = Map.empty<Principal, UserProfile>();
+  let savingsGoals = Map.empty<Principal, List.List<SavingsGoal>>();
   var nextId = 0;
+  var nextGoalId = 0;
+
+  public shared ({ caller }) func registerUser(name : Text) : async () {
+    userProfiles.add(caller, { name });
+    AccessControl.assignRole(accessControlState, caller, caller, #user);
+  };
 
   public query ({ caller }) func getCallerUserProfile() : async ?UserProfile {
-    if (not AccessControl.hasPermission(accessControlState, caller, #user)) {
-      Runtime.trap("Unauthorized: Only users can access profiles");
-    };
     userProfiles.get(caller);
   };
 
@@ -73,17 +103,10 @@ actor {
   };
 
   public shared ({ caller }) func saveCallerUserProfile(profile : UserProfile) : async () {
-    if (not AccessControl.hasPermission(accessControlState, caller, #user)) {
-      Runtime.trap("Unauthorized: Only users can save profiles");
-    };
     userProfiles.add(caller, profile);
   };
 
   public shared ({ caller }) func addOrUpdateEntry(id : ?Nat, date : Time.Time, entryType : EntryType, amount : Float, category : ?Text, note : ?Text) : async Nat {
-    if (not AccessControl.hasPermission(accessControlState, caller, #user)) {
-      Runtime.trap("Unauthorized: Only users can add entries");
-    };
-
     let userId = caller;
     let entries = switch (entryData.get(userId)) {
       case (null) { List.empty<Entry>() };
@@ -146,10 +169,6 @@ actor {
   };
 
   public shared ({ caller }) func deleteEntry(id : Nat) : async () {
-    if (not AccessControl.hasPermission(accessControlState, caller, #user)) {
-      Runtime.trap("Unauthorized: Only users can delete entries");
-    };
-
     let userId = caller;
     let entries = switch (entryData.get(userId)) {
       case (null) { Runtime.trap("Entry not found") };
@@ -172,10 +191,6 @@ actor {
   };
 
   public query ({ caller }) func getEntries() : async [Entry] {
-    if (not AccessControl.hasPermission(accessControlState, caller, #user)) {
-      Runtime.trap("Unauthorized: Only users can view entries");
-    };
-
     let userId = caller;
     switch (entryData.get(userId)) {
       case (null) { [] };
@@ -184,10 +199,6 @@ actor {
   };
 
   public query ({ caller }) func getDashboard() : async Dashboard {
-    if (not AccessControl.hasPermission(accessControlState, caller, #user)) {
-      Runtime.trap("Unauthorized: Only users can view dashboard");
-    };
-
     let userId = caller;
     let entries = switch (entryData.get(userId)) {
       case (null) { List.empty<Entry>() };
@@ -239,6 +250,104 @@ actor {
     {
       summary = { totalExpenses; totalSavings; netBalance };
       categoryBreakdown;
+    };
+  };
+
+  // Savings Goals
+
+  public query ({ caller }) func getSavingsGoals() : async [SavingsGoal] {
+    let userId = caller;
+    switch (savingsGoals.get(userId)) {
+      case (null) { [] };
+      case (?goals) { goals.sort(SavingsGoal.compareByDeadline).toArray() };
+    };
+  };
+
+  public shared ({ caller }) func addOrUpdateSavingsGoal(id : ?Nat, name : Text, targetAmount : Float, currentAmount : Float, deadline : ?Time.Time, note : ?Text) : async Nat {
+    let userId = caller;
+    let now = Time.now();
+
+    let goals = switch (savingsGoals.get(userId)) {
+      case (null) { List.empty<SavingsGoal>() };
+      case (?existingGoals) { existingGoals };
+    };
+
+    switch (id) {
+      case (null) {
+        let newId = nextGoalId;
+        let newGoal = {
+          id = newId;
+          name;
+          targetAmount;
+          currentAmount;
+          deadline;
+          note;
+          createdAt = now;
+          lastModified = now;
+        };
+        goals.add(newGoal);
+        savingsGoals.add(userId, goals);
+        nextGoalId += 1;
+        newId;
+      };
+      case (?existingId) {
+        let goalsArray = goals.toArray();
+        let existingGoalIndex = goalsArray.findIndex(func(g) { g.id == existingId });
+        switch (existingGoalIndex) {
+          case (null) {
+            let newGoal = {
+              id = existingId;
+              name;
+              targetAmount;
+              currentAmount;
+              deadline;
+              note;
+              createdAt = now;
+              lastModified = now;
+            };
+            goals.add(newGoal);
+            savingsGoals.add(userId, goals);
+            existingId;
+          };
+          case (?idx) {
+            let goalArray = goalsArray.filter(func(g) { g.id != existingId });
+            let existingGoal = goalsArray[idx];
+            let updatedGoal = {
+              existingGoal with
+              name;
+              targetAmount;
+              currentAmount;
+              deadline;
+              note;
+              lastModified = now;
+            };
+            let newGoals = List.fromArray<SavingsGoal>(goalArray);
+            newGoals.add(updatedGoal);
+            savingsGoals.add(userId, newGoals);
+            existingId;
+          };
+        };
+      };
+    };
+  };
+
+  public shared ({ caller }) func deleteSavingsGoal(id : Nat) : async () {
+    let userId = caller;
+    let goals = switch (savingsGoals.get(userId)) {
+      case (null) { Runtime.trap("Savings goal not found") };
+      case (?existingGoals) { existingGoals };
+    };
+
+    let goalsArray = goals.toArray();
+    let goalIndex = goalsArray.findIndex(func(g) { g.id == id });
+
+    switch (goalIndex) {
+      case (null) { Runtime.trap("Savings goal not found") };
+      case (?idx) {
+        let newGoalsArray = goalsArray.filter(func(g) { g.id != id });
+        let newGoals = List.fromArray<SavingsGoal>(newGoalsArray);
+        savingsGoals.add(userId, newGoals);
+      };
     };
   };
 };

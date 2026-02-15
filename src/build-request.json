@@ -1,106 +1,75 @@
 {
   "kind": "build_request",
-  "title": "Add mandatory type-specific category dropdowns and improve text contrast over background",
-  "priority": "normal",
+  "title": "Fix inability to add new entries (authorization + error reporting)",
+  "priority": "high",
   "requirements": [
     {
-      "id": "REQ-24",
-      "text": "Replace the single shared Category options list with two separate, alphabetically-sorted dropdown category lists: one for Expense entries and one for Saving entries.\n\nExpense categories (A–Z): AK Expenses, EB Bill, Internet Bill, Mobile Bill, Online Shopping, Snacks.\nSaving categories (A–Z): FD, PPF, RD, SIP, Saving Box.\n\nExpose these lists via the existing category constants module so all category dropdowns read from the same source of truth.",
-      "target": "frontend",
+      "id": "REQ-41",
+      "text": "Fix the Add Entry flow end-to-end so a signed-in user can successfully create a new entry and see it appear in the Entries list immediately after saving.",
+      "target": "both",
       "source": {
         "messageIds": [
-          "msg-1"
+          "msg-4"
         ],
         "quotes": [
-          "add some category as AK Expenses, Internet Bill, Mobile Bill, EB Bill, Online Shopping, Snacks and also arrange in Alphabets wise.\n\nSavings category will be different that should be PPF, Saving Box, SIP, RD, FD.",
-          "yes two separate dropdowns"
+          "can't able to add entries"
         ]
       },
       "acceptanceCriteria": [
-        "The codebase has two distinct exported category lists (Expense and Saving) and they are alphabetically sorted exactly as specified.",
-        "No UI category dropdown uses the old shared list (Food, Movies, Loans EMI, Transport, Home Expenses, Credit Card, Others)."
+        "When signed in with Internet Identity, submitting the Add New Entry form successfully creates an entry without errors.",
+        "After a successful save, the new entry appears in the Entries list (and any dependent dashboard data updates) without requiring a manual refresh.",
+        "The same signed-in user can add multiple entries in sequence."
       ]
     },
     {
-      "id": "REQ-25",
-      "text": "Update the Add New Entry form so Category is mandatory and uses two separate dropdowns based on the selected Type:\n- When Type is Expense, show only the Expense category dropdown.\n- When Type is Saving, show only the Saving category dropdown.\n\nEnsure changing the Type resets/clears any previously selected Category if it is not valid for the newly selected Type.\n\nUpdate all user-facing labels and validation messages in English (e.g., show “Category *” and prevent submission when no category is selected).",
-      "target": "frontend",
+      "id": "REQ-42",
+      "text": "Update backend access control initialization so authenticated users are reliably granted the required 'user' permissions to use core app functionality (profiles, entries, dashboard, savings goals) without needing an admin secret token.",
+      "target": "backend",
       "source": {
         "messageIds": [
-          "msg-1"
+          "msg-4"
         ],
         "quotes": [
-          "category must be mandatory",
-          "yes two separate dropdowns"
+          "can't able to add entries"
         ]
       },
       "acceptanceCriteria": [
-        "In Add New Entry, the Category field is required for both Expense and Saving types and the form cannot be submitted without a selected category.",
-        "The Category dropdown options change immediately when switching Type, and an invalid previous selection is cleared.",
-        "User sees clear English validation feedback when Category is missing."
+        "A newly signed-in principal can call getCallerUserProfile, saveCallerUserProfile, addOrUpdateEntry, getEntries, and getDashboard without receiving an \"Unauthorized: Only users ...\" trap solely due to missing role initialization.",
+        "Admin secret handling (if present) continues to work as before for admin-only privileges; non-admin users do not gain admin permissions.",
+        "No state migration is required unless the implementation changes stable persisted authorization state (only add backend/migration.mo if necessary per the conditional migration policy)."
       ]
     },
     {
-      "id": "REQ-26",
-      "text": "Update the Edit Entry dialog so Category is mandatory and uses two separate dropdowns based on the selected Type:\n- When Type is Expense, show only the Expense category dropdown.\n- When Type is Saving, show only the Saving category dropdown.\n\nEnsure changing the Type resets/clears any previously selected Category if it is not valid for the newly selected Type, and block saving until a valid category is selected.",
+      "id": "REQ-43",
+      "text": "Improve frontend error handling for entry creation so failures show a clear English error message that helps the user recover (e.g., show authorization/identity/validation errors instead of only a generic failure toast).",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-1"
+          "msg-4"
         ],
         "quotes": [
-          "category must be mandatory",
-          "Savings category will be different",
-          "yes two separate dropdowns"
+          "can't able to add entries"
         ]
       },
       "acceptanceCriteria": [
-        "In Edit Entry, the Category field is required and the dialog cannot save changes without a selected category.",
-        "The Category dropdown options change immediately when switching Type, and an invalid previous selection is cleared.",
-        "User-facing text remains in English."
-      ]
-    },
-    {
-      "id": "REQ-27",
-      "text": "Remove black-colored text from the UI by eliminating explicit black text styling (e.g., `text-black`, inline `#000`, or equivalent) and ensure text colors consistently use theme-driven foreground/muted-foreground tokens so they contrast clearly against the existing saving-money background image and overlay.\n\nIf needed, adjust theme variables and/or overlay opacity so default text is readable across pages (Dashboard, Entries, Download APK, and sign-in screen).",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-1"
-        ],
-        "quotes": [
-          "please remove the black colour in words, add the colors that should contrast from background image"
-        ]
-      },
-      "acceptanceCriteria": [
-        "No primary UI text relies on explicit black coloring; text color is driven by theme tokens (foreground/muted-foreground/etc.).",
-        "Text remains clearly readable over the current background image across the main pages and dialogs.",
-        "All user-facing text remains in English."
+        "If entry creation fails due to missing authentication/actor availability, show an English toast that indicates the user should sign in again or retry after the app finishes loading (no silent failure).",
+        "If the backend returns an authorization error (trap/message), the toast surfaces a readable version of that message (or a mapped friendly message) instead of only \"Failed to add entry. Please try again.\"",
+        "On success, the existing success toast remains in English and the form resets as it does today."
       ]
     }
   ],
   "constraints": [
-    "Do not modify files under frontend/src/components/ui (shadcn components); compose them from app components instead.",
-    "Do not edit immutable paths listed in SYSTEM_CONTEXT (e.g., frontend/src/hooks/useInternetIdentity.ts(x), frontend/src/hooks/useActor.ts, frontend/src/main.tsx).",
-    "Keep backend as a single Motoko actor; do not introduce additional backend services."
+    "Keep all Motoko logic in the single backend actor in backend/main.mo (single-actor architecture).",
+    "Do not edit any files under frontend/src/components/ui or other immutable paths listed in SYSTEM_CONTEXT.",
+    "Keep all user-facing text in English."
   ],
   "nonGoals": [
-    "Do not add new category free-text inputs; categories must remain dropdown-based.",
-    "Do not change backend data schema for entries unless strictly required for the UI changes.",
-    "Do not add new filters or analytics beyond updating category selection behavior in add/edit flows."
+    "Redesigning the Entries page UI/UX beyond what is required to make adding entries work and to improve error messages.",
+    "Adding new authentication providers (only Internet Identity is supported).",
+    "Introducing external databases or additional backend services."
   ],
   "imageRequirements": {
     "required": [],
     "edits": []
-  },
-  "userProfileUpdate": {
-    "goalsToAdd": [],
-    "goalsToRemove": [],
-    "preferencesToAdd": [],
-    "preferencesToRemove": [],
-    "miscToAdd": [],
-    "miscToRemove": [],
-    "fieldsToSet": {},
-    "fieldsToDelete": []
   }
 }

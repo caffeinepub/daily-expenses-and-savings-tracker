@@ -16,7 +16,7 @@ export function useGetEntries() {
 }
 
 export function useAddOrUpdateEntry() {
-  const { actor } = useActor();
+  const { actor, isFetching: actorFetching } = useActor();
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -38,9 +38,12 @@ export function useAddOrUpdateEntry() {
         params.note
       );
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['entries'] });
-      queryClient.invalidateQueries({ queryKey: ['dashboard'] });
+    onSuccess: async () => {
+      // Invalidate and refetch to ensure UI updates immediately
+      await queryClient.invalidateQueries({ queryKey: ['entries'] });
+      await queryClient.invalidateQueries({ queryKey: ['dashboard'] });
+      await queryClient.refetchQueries({ queryKey: ['entries'] });
+      await queryClient.refetchQueries({ queryKey: ['dashboard'] });
     },
   });
 }
@@ -54,9 +57,11 @@ export function useDeleteEntry() {
       if (!actor) throw new Error('Actor not available');
       return actor.deleteEntry(id);
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['entries'] });
-      queryClient.invalidateQueries({ queryKey: ['dashboard'] });
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['entries'] });
+      await queryClient.invalidateQueries({ queryKey: ['dashboard'] });
+      await queryClient.refetchQueries({ queryKey: ['entries'] });
+      await queryClient.refetchQueries({ queryKey: ['dashboard'] });
     },
   });
 }

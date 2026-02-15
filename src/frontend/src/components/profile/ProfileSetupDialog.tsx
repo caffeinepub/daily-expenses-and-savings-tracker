@@ -49,7 +49,7 @@ export default function ProfileSetupDialog() {
               autoFocus
             />
           </div>
-          <Button type="submit" className="w-full" disabled={saveProfile.isPending}>
+          <Button type="submit" className="w-full btn-interactive" disabled={saveProfile.isPending}>
             {saveProfile.isPending ? 'Saving...' : 'Continue'}
           </Button>
         </form>

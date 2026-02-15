@@ -1,46 +1,42 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-02-15T12:57:49.133Z",
-  "summary": "REQ-24 is implemented via new EXPENSE_CATEGORIES and SAVING_CATEGORIES constants and used by Add/Edit flows. REQ-25/26 appear largely implemented (type-specific category lists, clearing invalid category on type change, and blocking submit/save when category missing), but the diff is truncated so required field labeling (“Category *”) and any in-form validation text can’t be fully verified. REQ-27 is partially addressed (theme tokens and stronger overlays for readability), but the diff does not provide evidence that all explicit black text styling (e.g., text-black / #000) has been eliminated across the UI.",
+  "generatedAt": "2026-02-15T13:52:28.257Z",
+  "summary": "Diff implements improved frontend error normalization/toasts for entry creation and adds React Query invalidation/refetch so Entries and Dashboard update after saving. Backend shows a role assignment on registerUser, but there’s no clear evidence of automatic/robust user-role initialization for all authenticated callers across the required endpoints.",
   "missing_requirements": [
     {
-      "id": "REQ-25",
-      "requirement": "Update the Add New Entry form so Category is mandatory with clear English required labeling (e.g., “Category *”) and validation feedback when missing.",
-      "reason": "While submission is blocked with an English toast error (“Please select a category”), the diff for EntryForm.tsx is truncated before the Category field UI, so it’s not possible to confirm the label text includes “Category *” or that the category field itself is visually marked required.",
+      "id": "REQ-42",
+      "requirement": "Update backend access control initialization so authenticated users are reliably granted the required 'user' permissions to use core app functionality without needing an admin secret token.",
+      "reason": "The diff only shows role assignment during registerUser; it does not show any initialization/auto-assignment path ensuring a newly signed-in principal can call getCallerUserProfile, saveCallerUserProfile, addOrUpdateEntry, getEntries, and getDashboard without hitting authorization traps due to missing role initialization. No migration/init logic beyond registerUser is evidenced.",
       "evidence": [
-        "frontend/src/components/entries/EntryForm.tsx (truncated)"
-      ]
-    },
-    {
-      "id": "REQ-26",
-      "requirement": "Update the Edit Entry dialog so Category is mandatory with clear English required labeling (e.g., “Category *”) and block saving until a valid category is selected.",
-      "reason": "Blocking save appears implemented via toast error when category is empty, but the diff is truncated before the Category field rendering, so it’s not possible to confirm the required label (“Category *”) or exact UI validation messaging in the dialog content.",
-      "evidence": [
-        "frontend/src/components/entries/EditEntryDialog.tsx (truncated)"
-      ]
-    },
-    {
-      "id": "REQ-27",
-      "requirement": "Remove black-colored text from the UI by eliminating explicit black text styling (e.g., `text-black`, inline `#000`, or equivalent) and ensure text colors consistently use theme-driven tokens across pages and dialogs.",
-      "reason": "The diff shows theme variable updates and higher-opacity overlays for readability, but it does not show removal of explicit black text classes/values across the codebase. Without evidence of changes in other components/pages, compliance with “no explicit black text styling anywhere” cannot be verified.",
-      "evidence": [
-        "frontend/src/index.css",
-        "frontend/src/components/layout/AppLayout.tsx",
-        "frontend/src/components/auth/AuthGate.tsx"
+        "backend/main.mo (shows `registerUser` assigning `#user`, but no broader initialization is shown)"
       ]
     }
   ],
-  "hallucinated_features": [],
-  "confidence": 0.62,
+  "hallucinated_features": [
+    {
+      "description": "Added an Entries page UI toggle to show/hide the entry form (shown by default).",
+      "reason": "REQ-41/42/43 focus on fixing add-entry flow, backend authorization init, and error reporting; a show/hide form toggle is not requested and is a UI/UX change beyond what’s strictly required.",
+      "evidence": [
+        "frontend/src/pages/EntriesPage.tsx"
+      ]
+    },
+    {
+      "description": "Made category selection mandatory with new validation errors (e.g., 'Please select a category') and category clearing logic based on entry type.",
+      "reason": "The request is about fixing add-entry authorization + error reporting; this introduces new validation/behavior not explicitly requested and may change prior behavior.",
+      "evidence": [
+        "frontend/src/components/entries/EntryForm.tsx"
+      ]
+    }
+  ],
+  "confidence": 0.64,
   "changed_files": [
+    "backend/main.mo",
     "frontend-file-summaries.txt",
-    "frontend/src/components/auth/AuthGate.tsx",
-    "frontend/src/components/entries/EditEntryDialog.tsx",
     "frontend/src/components/entries/EntryForm.tsx",
-    "frontend/src/components/layout/AppLayout.tsx",
-    "frontend/src/constants/categories.ts",
-    "frontend/src/index.css",
+    "frontend/src/hooks/queries/useEntries.ts",
+    "frontend/src/pages/EntriesPage.tsx",
+    "frontend/src/utils/icErrors.ts",
     "project_state.json"
   ]
 }

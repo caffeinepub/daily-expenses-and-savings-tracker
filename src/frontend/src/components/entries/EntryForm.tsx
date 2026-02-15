@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAddOrUpdateEntry } from '../../hooks/queries/useEntries';
+import { useActor } from '../../hooks/useActor';
 import { EntryType } from '../../backend';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -19,6 +20,7 @@ import { toast } from 'sonner';
 import { CalendarIcon, Plus } from 'lucide-react';
 import { format } from 'date-fns';
 import { EXPENSE_CATEGORIES, SAVING_CATEGORIES } from '../../constants/categories';
+import { normalizeICError } from '../../utils/icErrors';
 
 export default function EntryForm() {
   const [date, setDate] = useState<Date>(new Date());
@@ -27,6 +29,7 @@ export default function EntryForm() {
   const [category, setCategory] = useState('');
   const [note, setNote] = useState('');
 
+  const { actor, isFetching: actorLoading } = useActor();
   const addEntry = useAddOrUpdateEntry();
 
   // Get the appropriate category list based on entry type
@@ -41,6 +44,17 @@ export default function EntryForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Check if actor is available
+    if (!actor) {
+      toast.error('Please wait for the app to finish loading, then try again.');
+      return;
+    }
+
+    if (actorLoading) {
+      toast.error('Please wait while we connect to the backend...');
+      return;
+    }
 
     const amountNum = parseFloat(amount);
     if (isNaN(amountNum) || amountNum <= 0) {
@@ -64,14 +78,20 @@ export default function EntryForm() {
       });
 
       toast.success(`${entryType === EntryType.expense ? 'Expense' : 'Saving'} added successfully!`);
+      
+      // Reset form to today's date and clear fields
       setAmount('');
       setCategory('');
       setNote('');
       setDate(new Date());
     } catch (error) {
-      toast.error('Failed to add entry. Please try again.');
+      const errorMessage = normalizeICError(error);
+      toast.error(errorMessage);
+      console.error('Failed to add entry:', error);
     }
   };
+
+  const isSubmitDisabled = addEntry.isPending || actorLoading || !actor;
 
   return (
     <Card>
@@ -167,9 +187,13 @@ export default function EntryForm() {
             />
           </div>
 
-          <Button type="submit" className="w-full h-10 sm:h-9 text-sm btn-interactive" disabled={addEntry.isPending}>
+          <Button 
+            type="submit" 
+            className="w-full h-10 sm:h-9 text-sm btn-interactive" 
+            disabled={isSubmitDisabled}
+          >
             <Plus className="mr-2 h-4 w-4" />
-            {addEntry.isPending ? 'Adding...' : 'Add Entry'}
+            {actorLoading ? 'Loading...' : addEntry.isPending ? 'Adding...' : 'Add Entry'}
           </Button>
         </form>
       </CardContent>

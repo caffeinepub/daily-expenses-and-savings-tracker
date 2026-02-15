@@ -2,30 +2,12 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-replace-the-single-shared-category-options-list-with-two-separate-alphabetically-sorted-dropdown-category-lists-one-for-expense-entries-and-one-for-saving-entries-expense-categories-a-z-ak-expenses-eb-bill-internet-bill-mobile-bill-online-shopping-snacks-saving-categories-a-z-fd-ppf-rd-sip-saving-box-expose-these-lists-via-the-existing-category-constants-module-so-all-category-dropdowns-read-from-the-same-source-of-truth",
-      "featureTitle": "Replace the single shared Category options list with two separate, alphabetically-sorted dropdown category lists: one for Expense entries and one for Saving entries.\n\nExpense categories (A–Z): AK Expenses, EB Bill, Internet Bill, Mobile Bill, Online Shopping, Snacks.\nSaving categories (A–Z): FD, PPF, RD, SIP, Saving Box.\n\nExpose these lists via the existing category constants module so all category dropdowns read from the same source of truth.",
-      "files": [
-        "frontend/src/constants/categories.ts"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-24"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-update-the-add-new-entry-form-so-category-is-mandatory-and-uses-two-separate-dropdowns-based-on-the-selected-type-when-type-is-expense-show-only-the-expense-category-dropdown-when-type-is-saving-show-only-the-saving-category-dropdown-ensure-changing-the-type-resets-clears-any-previously-selected-category-if-it-is-not-valid-for-the-newly-selected-type-update-all-user-facing-labels-and-validation-messages-in-english-e-g-show-category-and-prevent-submission-when-no-category-is-selected",
-      "featureTitle": "Update the Add New Entry form so Category is mandatory and uses two separate dropdowns based on the selected Type:\n- When Type is Expense, show only the Expense category dropdown.\n- When Type is Saving, show only the Saving category dropdown.\n\nEnsure changing the Type resets/clears any previously selected Category if it is not valid for the newly selected Type.\n\nUpdate all user-facing labels and validation messages in English (e.g., show “Category *” and prevent submission when no category is selected).",
+      "featureId": "feature-fix-the-add-entry-flow-end-to-end-so-a-signed-in-user-can-successfully-create-a-new-entry-and-see-it-appear-in-the-entries-list-immediately-after-saving",
+      "featureTitle": "Fix the Add Entry flow end-to-end so a signed-in user can successfully create a new entry and see it appear in the Entries list immediately after saving.",
       "files": [
         "frontend/src/components/entries/EntryForm.tsx",
-        "frontend/src/constants/categories.ts"
+        "frontend/src/hooks/queries/useEntries.ts",
+        "frontend/src/pages/EntriesPage.tsx"
       ],
       "components": [
         "authorization@4.0.0",
@@ -36,39 +18,16 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-25"
+        "REQ-41"
       ],
       "confidence": "high"
     },
     {
-      "featureId": "feature-update-the-edit-entry-dialog-so-category-is-mandatory-and-uses-two-separate-dropdowns-based-on-the-selected-type-when-type-is-expense-show-only-the-expense-category-dropdown-when-type-is-saving-show-only-the-saving-category-dropdown-ensure-changing-the-type-resets-clears-any-previously-selected-category-if-it-is-not-valid-for-the-newly-selected-type-and-block-saving-until-a-valid-category-is-selected",
-      "featureTitle": "Update the Edit Entry dialog so Category is mandatory and uses two separate dropdowns based on the selected Type:\n- When Type is Expense, show only the Expense category dropdown.\n- When Type is Saving, show only the Saving category dropdown.\n\nEnsure changing the Type resets/clears any previously selected Category if it is not valid for the newly selected Type, and block saving until a valid category is selected.",
+      "featureId": "feature-improve-frontend-error-handling-for-entry-creation-so-failures-show-a-clear-english-error-message-that-helps-the-user-recover-e-g-show-authorization-identity-validation-errors-instead-of-only-a-generic-failure-toast",
+      "featureTitle": "Improve frontend error handling for entry creation so failures show a clear English error message that helps the user recover (e.g., show authorization/identity/validation errors instead of only a generic failure toast).",
       "files": [
-        "frontend/src/components/entries/EditEntryDialog.tsx",
-        "frontend/src/constants/categories.ts"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-26"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-remove-black-colored-text-from-the-ui-by-eliminating-explicit-black-text-styling-e-g-text-black-inline-000-or-equivalent-and-ensure-text-colors-consistently-use-theme-driven-foreground-muted-foreground-tokens-so-they-contrast-clearly-against-the-existing-saving-money-background-image-and-overlay-if-needed-adjust-theme-variables-and-or-overlay-opacity-so-default-text-is-readable-across-pages-dashboard-entries-download-apk-and-sign-in-screen",
-      "featureTitle": "Remove black-colored text from the UI by eliminating explicit black text styling (e.g., `text-black`, inline `#000`, or equivalent) and ensure text colors consistently use theme-driven foreground/muted-foreground tokens so they contrast clearly against the existing saving-money background image and overlay.\n\nIf needed, adjust theme variables and/or overlay opacity so default text is readable across pages (Dashboard, Entries, Download APK, and sign-in screen).",
-      "files": [
-        "frontend/src/components/auth/AuthGate.tsx",
-        "frontend/src/components/entries/EditEntryDialog.tsx",
         "frontend/src/components/entries/EntryForm.tsx",
-        "frontend/src/components/layout/AppLayout.tsx",
-        "frontend/src/index.css"
+        "frontend/src/utils/icErrors.ts"
       ],
       "components": [
         "authorization@4.0.0",
@@ -79,7 +38,7 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-27"
+        "REQ-43"
       ],
       "confidence": "high"
     }
